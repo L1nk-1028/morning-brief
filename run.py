@@ -19,6 +19,7 @@ from briefing.llm import enhance
 from briefing.push import PushError, push_report
 from briefing.rank import prepare, select
 from briefing.render import render_html, render_markdown, write_outputs
+from briefing.translate import translate_articles
 
 ROOT = Path(__file__).resolve().parent
 
@@ -88,6 +89,9 @@ def main() -> int:
         return 1
 
     now = datetime.now(timezone.utc)
+    output_dir = ROOT / config["report"].get("output_dir", "output")
+    site_dir = ROOT / config["report"].get("site_dir", "docs")
+
     if args.no_llm:
         config.setdefault("llm", {})["enabled"] = False
     top, sections, llm_meta = enhance(top, sections, config, now)
@@ -95,6 +99,14 @@ def main() -> int:
         print("AI 编辑：已生成中文标题、摘要与推荐理由")
     elif llm_meta.get("llm_error"):
         print(f"AI 编辑跳过：{llm_meta['llm_error']}")
+
+    translation_count = 0
+    if not llm_meta.get("llm_used"):
+        translation_count = translate_articles(
+            top, sections, output_dir / "translation_cache.json", config
+        )
+        if translation_count:
+            print(f"备用翻译：已翻译 {translation_count} 条英文标题")
 
     meta = {
         "generated_at": now,
@@ -104,12 +116,10 @@ def main() -> int:
         "errors": fetched.errors,
         "llm_used": llm_meta.get("llm_used", False),
         "llm_error": llm_meta.get("llm_error", ""),
+        "translation_used": translation_count > 0,
     }
     markdown = render_markdown(top, sections, config, meta)
     page = render_html(top, sections, config, meta)
-
-    output_dir = ROOT / config["report"].get("output_dir", "output")
-    site_dir = ROOT / config["report"].get("site_dir", "docs")
     paths = write_outputs(output_dir, site_dir, markdown, page, meta)
 
     # 归档一份按日期命名的网页，方便以后回看。
