@@ -200,11 +200,11 @@ def render_html(
     if meta.get("llm_used"):
         ai_note = "AI 编辑已生成中文标题、摘要与推荐理由。"
     elif meta.get("llm_error"):
-        ai_note = f'AI 编辑未生效：{html.escape(str(meta["llm_error"])[:300])}'
+        ai_note = f'AI 编辑本次未生效：{html.escape(str(meta["llm_error"])[:300])}'
     elif meta.get("translation_used"):
-        ai_note = "AI 编辑未生效，英文标题已用备用翻译；部分摘要保留英文。"
+        ai_note = "当前使用备用翻译：英文标题已转为中文；如需 AI 摘要，可在 config.json 接入 DeepSeek。"
     else:
-        ai_note = "部分外媒内容保留英文原文；接入 AI 后将自动生成中文摘要。"
+        ai_note = "部分外媒内容保留英文原文。"
 
     return f"""<!doctype html>
 <html lang="zh-CN">
