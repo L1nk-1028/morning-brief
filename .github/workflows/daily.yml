@@ -1,0 +1,73 @@
+name: Daily Morning Brief
+
+on:
+  schedule:
+    # GitHub Actions 使用 UTC；00:20 UTC = 北京时间 08:20。
+    # 预留 10 分钟给抓取、AI 编辑和推送，目标是在 08:30 左右送达。
+    - cron: "20 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  models: read
+
+concurrency:
+  group: morning-brief
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate morning brief
+        env:
+          TZ: Asia/Shanghai
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERVERCHAN_SENDKEY: ${{ secrets.SERVERCHAN_SENDKEY }}
+          SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+        run: |
+          if [ -n "$SERVERCHAN_SENDKEY" ]; then
+            python run.py --push --site-url "$SITE_URL"
+          else
+            echo "SERVERCHAN_SENDKEY 未配置，本次只生成不推送。"
+            python run.py --site-url "$SITE_URL"
+          fi
+
+      - name: Commit generated report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add output docs
+          if git diff --cached --quiet; then
+            echo "没有新内容需要提交。"
+          else
+            git commit -m "chore: daily brief $(date +%F)"
+            git push
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
