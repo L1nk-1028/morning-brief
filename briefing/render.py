@@ -197,6 +197,15 @@ def render_html(
             f"<pre>{html.escape(chr(10).join(meta['errors'][:12]))}</pre></details>"
         )
 
+    if meta.get("llm_used"):
+        ai_note = "AI 编辑已生成中文标题、摘要与推荐理由。"
+    elif meta.get("llm_error"):
+        ai_note = f'AI 编辑未生效：{html.escape(str(meta["llm_error"])[:300])}'
+    elif meta.get("translation_used"):
+        ai_note = "AI 编辑未生效，英文标题已用备用翻译；部分摘要保留英文。"
+    else:
+        ai_note = "部分外媒内容保留英文原文；接入 AI 后将自动生成中文摘要。"
+
     return f"""<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -304,7 +313,7 @@ def render_html(
 
   <footer>
     <div>由 Morning Brief 自动生成 · {d.strftime('%H:%M')}（北京时间）</div>
-    <div>{'AI 编辑已生成中文标题、摘要与推荐理由。' if meta.get('llm_used') else '部分外媒内容保留英文原文；接入 AI 后将自动生成中文摘要。'}</div>
+    <div>{ai_note}</div>
     {error_note}
   </footer>
 </div>
@@ -341,6 +350,9 @@ def write_outputs(
                 "ok_sources": meta["ok_sources"],
                 "failed_sources": meta["failed_sources"],
                 "errors": meta["errors"],
+                "llm_used": meta.get("llm_used", False),
+                "llm_error": meta.get("llm_error", ""),
+                "translation_used": meta.get("translation_used", False),
             },
             ensure_ascii=False,
             indent=2,
