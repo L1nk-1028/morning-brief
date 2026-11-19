@@ -183,20 +183,23 @@ def _take_diverse(
     return picked
 
 
-TOPIC_TERMS = {
-    "trilateral": {"xi", "trump", "putin", "习近平", "特朗普", "普京", "trilateral", "three-way"},
-    "gaza": {"gaza", "israel", "hamas", "加沙", "以色列", "哈马斯"},
-    "ukraine": {"ukraine", "russia", "乌克兰", "俄罗斯"},
-    "cop31": {"cop31", "climate", "气候"},
-    "apec": {"apec", "深圳"},
+TOPIC_RULES = {
+    "trilateral": (
+        {"xi", "trump", "putin", "习近平", "特朗普", "普京", "trilateral", "three-way", "china", "russia", "中国", "俄罗斯"},
+        2,
+    ),
+    "gaza": ({"gaza", "israel", "hamas", "netanyahu", "加沙", "以色列", "哈马斯", "内塔尼亚胡"}, 1),
+    "ukraine": ({"ukraine", "russia", "乌克兰", "俄罗斯"}, 2),
+    "cop31": ({"cop31", "climate", "气候"}, 1),
+    "apec": ({"apec", "深圳"}, 1),
 }
 
 
 def _topic_keys(article: Article) -> set[str]:
     text = article.title.lower()
     keys: set[str] = set()
-    for name, terms in TOPIC_TERMS.items():
-        if sum(1 for term in terms if _keyword_hit(text, term)) >= 2:
+    for name, (terms, min_hits) in TOPIC_RULES.items():
+        if sum(1 for term in terms if _keyword_hit(text, term)) >= min_hits:
             keys.add(name)
     return keys
 
@@ -258,13 +261,18 @@ def select(articles: list[Article], config: dict) -> tuple[list[Article], dict[s
         if len(top) >= top_limit:
             break
 
-    # 极端情况下候选不足，放宽来源限制补足。
+    # 候选不足时放宽来源/栏目限制补足，但仍然不允许同一话题重复。
     if len(top) < top_limit:
         chosen = {id(a) for a in top}
         for article in candidates:
             if id(article) in chosen:
                 continue
+            topics = _topic_keys(article)
+            if topics & used_topics:
+                continue
             top.append(article)
+            used_topics.update(topics)
+            chosen.add(id(article))
             if len(top) >= top_limit:
                 break
 
