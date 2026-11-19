@@ -27,11 +27,14 @@ INCLUDE_FILES = {
     "config.json",
     "run.py",
     "README.md",
+    "PREFERENCES.md",
     "run.ps1",
     "preview.ps1",
     "publish_github.py",
     "publish.ps1",
     "publish.bat",
+    "test_push.py",
+    "test_push.bat",
 }
 INCLUDE_DIRS = ("briefing/", "docs/", "output/", ".github/")
 SKIP_PARTS = {".git", "__pycache__", ".venv", "node_modules"}
