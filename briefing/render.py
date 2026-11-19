@@ -245,7 +245,13 @@ def render_html(
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f4f1ea">
-<title>{title} · {short_date(now)}</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="{title}">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
+<link rel="icon" type="image/png" href="apple-touch-icon.png?v=3">
+<link rel="manifest" href="manifest.webmanifest?v=3">
+<title>{title}</title>
 <style>
   :root {{
     --bg: #f4f1ea;
@@ -392,6 +398,22 @@ def write_outputs(
         ),
         encoding="utf-8",
     )
+
+    # 主屏幕图标和 PWA 配置：让 iPhone 添加到主屏幕时使用“晨”图标，
+    # 而不是截取标题的第一个字。
+    for name in (
+        "apple-touch-icon.png",
+        "apple-touch-icon-180.png",
+        "icon-192.png",
+        "icon-512.png",
+        "manifest.webmanifest",
+    ):
+        src = site_dir / name
+        if src.exists():
+            try:
+                (output_dir / name).write_bytes(src.read_bytes())
+            except OSError:
+                pass
     return {
         "markdown": md_path,
         "html": html_path,
