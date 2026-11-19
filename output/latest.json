@@ -1,9 +1,25 @@
 {
-  "generated_at": "2026-11-19T03:22:56.315426+00:00",
-  "total_items": 1096,
-  "ok_sources": 35,
-  "failed_sources": 1,
+  "generated_at": "2026-11-19T05:31:40.736105+00:00",
+  "total_items": 629,
+  "ok_sources": 22,
+  "failed_sources": 14,
   "errors": [
-    "The Verge：网络错误：_ssl.c:994: The handshake operation timed out"
-  ]
+    "NASA：HTTP 429",
+    "BBC World：网络错误：timed out",
+    "Al Jazeera：网络错误：timed out",
+    "The Guardian · World：网络错误：timed out",
+    "Polygon：RemoteDisconnected: Remote end closed connection without response",
+    "Anime News Network：HTTP 403",
+    "Financial Times：网络错误：timed out",
+    "Bloomberg · Markets：网络错误：timed out",
+    "BBC 中文：网络错误：timed out",
+    "BBC Sport：网络错误：timed out",
+    "德国之声 · 中文：网络错误：timed out",
+    "法广 · 中文：网络错误：timed out",
+    "The Guardian · Sport：网络错误：timed out",
+    "BBC · Entertainment：网络错误：timed out"
+  ],
+  "llm_used": false,
+  "llm_error": "",
+  "translation_used": true
 }
