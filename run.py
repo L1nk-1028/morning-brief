@@ -145,8 +145,8 @@ def main() -> int:
             result = push_report(config, title, markdown, site_url=args.site_url)
             print(f"微信推送：{result.message}")
         except PushError as exc:
+            # 推送失败不阻断网页发布；第二天/手动重跑时可以再试。
             print(f"微信推送失败：{exc}")
-            return 2
 
     return 0
 
