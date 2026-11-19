@@ -248,9 +248,9 @@ def render_html(
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="{title}">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
-<link rel="icon" type="image/png" href="apple-touch-icon.png?v=3">
-<link rel="manifest" href="manifest.webmanifest?v=3">
+<link rel="apple-touch-icon" href="apple-touch-icon-v4.png">
+<link rel="icon" type="image/png" href="apple-touch-icon-v4.png">
+<link rel="manifest" href="manifest.webmanifest?v=4">
 <title>{title}</title>
 <style>
   :root {{
@@ -402,6 +402,10 @@ def write_outputs(
     # 主屏幕图标和 PWA 配置：让 iPhone 添加到主屏幕时使用“晨”图标，
     # 而不是截取标题的第一个字。
     for name in (
+        "apple-touch-icon-v4.png",
+        "apple-touch-icon-v4-180.png",
+        "icon-v4-192.png",
+        "icon-v4-512.png",
         "apple-touch-icon.png",
         "apple-touch-icon-180.png",
         "icon-192.png",
