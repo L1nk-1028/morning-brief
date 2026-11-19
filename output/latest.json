@@ -1,25 +1,10 @@
 {
-  "generated_at": "2026-11-19T05:31:40.736105+00:00",
-  "total_items": 629,
-  "ok_sources": 22,
-  "failed_sources": 14,
-  "errors": [
-    "NASA：HTTP 429",
-    "BBC World：网络错误：timed out",
-    "Al Jazeera：网络错误：timed out",
-    "The Guardian · World：网络错误：timed out",
-    "Polygon：RemoteDisconnected: Remote end closed connection without response",
-    "Anime News Network：HTTP 403",
-    "Financial Times：网络错误：timed out",
-    "Bloomberg · Markets：网络错误：timed out",
-    "BBC 中文：网络错误：timed out",
-    "BBC Sport：网络错误：timed out",
-    "德国之声 · 中文：网络错误：timed out",
-    "法广 · 中文：网络错误：timed out",
-    "The Guardian · Sport：网络错误：timed out",
-    "BBC · Entertainment：网络错误：timed out"
-  ],
+  "generated_at": "2026-11-19T05:39:01.481159+00:00",
+  "total_items": 1105,
+  "ok_sources": 36,
+  "failed_sources": 0,
+  "errors": [],
   "llm_used": false,
-  "llm_error": "",
+  "llm_error": "AI 返回格式异常：OK\r\n",
   "translation_used": true
 }
