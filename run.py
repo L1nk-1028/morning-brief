@@ -45,7 +45,7 @@ def load_config(path: Path) -> dict:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="生成我的每日早报")
+    parser = argparse.ArgumentParser(description="生成晨间简报")
     parser.add_argument("--config", default=str(ROOT / "config.json"), help="配置文件路径")
     parser.add_argument("--push", action="store_true", help="生成后推送到微信")
     parser.add_argument("--site-url", default="", help="手机阅读页地址，例如 GitHub Pages 链接")
