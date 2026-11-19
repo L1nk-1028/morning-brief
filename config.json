@@ -1,7 +1,7 @@
 {
   "timezone": "Asia/Shanghai",
   "report": {
-    "title": "我的每日早报",
+    "title": "晨间简报",
     "greeting": "早上好",
     "top_count": 5,
     "max_age_hours": 36,
