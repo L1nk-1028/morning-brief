@@ -20,7 +20,7 @@ class LLMError(RuntimeError):
     pass
 
 
-def _provider_settings(config: dict) -> tuple[str, str, str, str]:
+def _provider_settings(config: dict) -> tuple[str, str, list[str], str]:
     llm = config.get("llm", {})
     provider = llm.get("provider", "github")
     if provider == "github":
@@ -37,43 +37,56 @@ def _provider_settings(config: dict) -> tuple[str, str, str, str]:
     key = os.environ.get(key_env, "").strip()
     if not key:
         raise LLMError(f"没有找到环境变量 {key_env}，跳过 AI 编辑")
-    return provider, base_url.rstrip("/"), model, key
+
+    models = [model]
+    for fallback in llm.get("fallback_models", []):
+        if fallback and fallback not in models:
+            models.append(str(fallback))
+    return provider, base_url.rstrip("/"), models, key
 
 
 def _chat(config: dict, messages: list[dict[str, str]]) -> str:
-    provider, base_url, model, key = _provider_settings(config)
+    provider, base_url, models, key = _provider_settings(config)
     url = f"{base_url}/chat/completions"
-    body = {
-        "model": model,
-        "messages": messages,
-        "temperature": 0.25,
-        "max_tokens": 5000,
-    }
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(body, ensure_ascii=False).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {key}",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "User-Agent": "MorningBrief/1.0",
-        },
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=int(config.get("llm", {}).get("timeout", 120))) as resp:
-            raw = resp.read().decode("utf-8", errors="replace")
-    except urllib.error.HTTPError as exc:
-        detail = exc.read().decode("utf-8", errors="replace")[:500]
-        raise LLMError(f"{provider} HTTP {exc.code}：{detail}") from exc
-    except urllib.error.URLError as exc:
-        raise LLMError(f"{provider} 网络错误：{exc.reason}") from exc
+    timeout = int(config.get("llm", {}).get("timeout", 120))
+    last_error = ""
 
-    try:
-        data = json.loads(raw)
-        return data["choices"][0]["message"]["content"]
-    except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
-        raise LLMError(f"AI 返回格式异常：{raw[:300]}") from exc
+    for model in models:
+        body = {
+            "model": model,
+            "messages": messages,
+            "temperature": 0.25,
+            "max_tokens": 4000,
+        }
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(body, ensure_ascii=False).encode("utf-8"),
+            headers={
+                "Authorization": f"Bearer {key}",
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "User-Agent": "MorningBrief/1.0",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                raw = resp.read().decode("utf-8", errors="replace")
+            data = json.loads(raw)
+            return data["choices"][0]["message"]["content"]
+        except urllib.error.HTTPError as exc:
+            detail = exc.read().decode("utf-8", errors="replace")[:400]
+            last_error = f"{provider} 模型 {model} HTTP {exc.code}：{detail}"
+            # 模型不存在/参数不支持时换下一个模型；权限/限流问题直接报错。
+            if exc.code in (400, 404) and model != models[-1]:
+                continue
+            raise LLMError(last_error) from exc
+        except urllib.error.URLError as exc:
+            raise LLMError(f"{provider} 网络错误：{exc.reason}") from exc
+        except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
+            raise LLMError(f"AI 返回格式异常：{raw[:300]}") from exc
+
+    raise LLMError(last_error or "没有可用的 AI 模型")
 
 
 def _extract_json(text: str) -> dict[str, Any]:
