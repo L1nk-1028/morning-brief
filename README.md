@@ -263,6 +263,8 @@ python run.py --push --no-llm
 - 写一句“为什么值得看”；
 - 从候选里挑 5 条今日要闻。
 
+如果 GitHub Models 暂时不可用，程序会自动用 MyMemory 免费翻译英文标题（摘要可能保留英文），早报不会空白。网页底部会显示 AI 未生效的原因，`output/latest.json` 里也有 `llm_error` 字段，方便排查。
+
 如果 GitHub Models 暂时不可用，可以改用 DeepSeek（需要自己充一点点钱，一天几分钱）：
 
 ```json
@@ -302,7 +304,10 @@ GitHub Actions 的定时任务用 UTC：
 A：你本地网络访问 BBC/Guardian 等可能超时；GitHub Actions 的服务器在海外，通常能访问。失败不会影响其他源，页面底部会列出。
 
 **Q：为什么有的新闻是英文？**
-A：本地没配置 AI 时会保留原文；GitHub Actions 里启用了 GitHub Models，会自动翻译。也可以 `--no-llm` 强制关闭 AI 对比效果。
+A：本地没配置 AI 时会保留原文；GitHub Actions 里启用了 GitHub Models，会自动翻译。也可以 `--no-llm` 强制关闭 AI 对比效果。若云端 AI 失败，网页底部会显示原因，并自动启用 MyMemory 备用翻译。
+
+**Q：网页底部显示“AI 编辑未生效”？**
+A：先看它后面的原因。常见是 GitHub Models 未启用、模型名变化或 Token 权限不足。打开 `output/latest.json` 可以看到完整的 `llm_error`。也可以把 `config.json` 里的 `llm.provider` 改成 `deepseek`，再配置 `DEEPSEEK_API_KEY` 作为备用。
 
 **Q：微信只收到一小段？**
 A：Server酱 对消息长度有限制。早报全文在网页里，微信里保留标题、要闻和链接。后续可以把“今日要闻”单独做短消息。
