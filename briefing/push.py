@@ -64,12 +64,15 @@ def _post_json(url: str, payload: dict, timeout: int = 20) -> dict:
         raise PushError(f"推送服务返回了非 JSON 内容：{text[:200]}") from exc
 
 
-def push_serverchan(sendkey: str, title: str, markdown: str) -> PushResult:
+def push_serverchan(sendkey: str, title: str, markdown: str, short: str = "") -> PushResult:
     if not sendkey:
         raise PushError("缺少 Server酱 SendKey")
     url = f"https://sctapi.ftqq.com/{sendkey}.send"
+    payload = {"title": title[:32], "desp": markdown}
+    if short:
+        payload["short"] = short[:60]
     try:
-        data = _post_form(url, {"title": title[:32], "desp": markdown})
+        data = _post_form(url, payload)
     except urllib.error.HTTPError as exc:
         raise PushError(f"Server酱 HTTP {exc.code}") from exc
     code = data.get("code")
@@ -99,7 +102,8 @@ def push_pushplus(token: str, title: str, markdown: str) -> PushResult:
 def push_report(
     config: dict,
     title: str,
-    markdown: str,
+    body: str,
+    short: str = "",
     site_url: str = "",
 ) -> PushResult:
     provider = config.get("push", {}).get("provider", "serverchan")
@@ -107,12 +111,11 @@ def push_report(
     env_name = config.get("push", {}).get("sendkey_env", default_env)
     key = os.environ.get(env_name, "").strip()
 
-    body = markdown
-    if site_url:
-        body += f"\n\n---\n\n[在手机上阅读排版版]({site_url})\n"
+    if site_url and site_url not in body:
+        body += f"\n\n[在手机上阅读排版版]({site_url})"
 
     if provider == "serverchan":
-        return push_serverchan(key, title, body)
+        return push_serverchan(key, title, body, short=short)
     if provider == "pushplus":
         return push_pushplus(key, title, body)
     raise PushError(f"不支持的推送方式：{provider}")
