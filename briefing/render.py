@@ -117,6 +117,39 @@ def render_markdown(
     return "\n".join(lines)
 
 
+def render_push_digest(
+    top: list[Article],
+    sections: dict[str, list[Article]],
+    config: dict,
+    site_url: str,
+) -> str:
+    """微信推送用的短消息：链接放最上面，避免用户拉到最底下。"""
+    lines: list[str] = []
+    if site_url:
+        lines.append(f"### 👉 [点此阅读排版版]({site_url})")
+    else:
+        lines.append("### 👉 今天的排版版（网页地址未配置）")
+    lines.append("")
+    lines.append("**今日要闻**")
+    for index, article in enumerate(top[:5], 1):
+        lines.append(f"{index}. {_md_escape(article.display_title)}")
+    lines.append("")
+
+    counts = []
+    for section in config["sections"]:
+        if section["id"] == "top":
+            continue
+        count = len(sections.get(section["id"], []))
+        if count:
+            counts.append(f"{section['title']} {count}")
+    if counts:
+        lines.append("**其他**：" + " · ".join(counts))
+        lines.append("")
+
+    lines.append("点上面的链接看完整排版版；微信里只保留要闻，方便快速浏览。")
+    return "\n".join(lines)
+
+
 def _html_article(article: Article, now: datetime, index: int | None = None) -> str:
     number = f'<span class="rank">{index}</span>' if index else ""
     title = html.escape(article.display_title)
