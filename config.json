@@ -846,7 +846,8 @@
     "provider": "mymemory",
     "target": "zh-CN",
     "max_items": 40,
-    "max_summary_chars": 180
+    "max_summary_chars": 180,
+    "batch_size": 5
   },
   "push": {
     "enabled": false,
