@@ -51,6 +51,7 @@ ROUTINE_TERMS = [
     "评测", "攻略", "早报｜", "受访者", "调查", "问卷", "科普", "考古",
     "旅游", "乡村", "侨村", "消防", "健康", "养生", "咖啡", "骨头",
     "校园", "课堂", "App", "应用推荐",
+    "小幅", "微涨", "微跌", "收涨", "收跌", "个股", "板块", "行情", "快讯",
     "on this day", "this day in", "anniversary", "历史上的今天", "回顾", "纪念",
 ]
 
@@ -101,6 +102,24 @@ def _scores(
             if _keyword_hit(text, keyword):
                 hits += 1
     score += min(hits * 0.14, 2.0)
+
+    # 栏目内的偏好加权：让用户真正关心的具体对象排到前面。
+    if article.section == "sports" and any(
+        _keyword_hit(text, kw)
+        for kw in ("nba", "f1", "paul george", "kawhi leonard", "verstappen", "hamilton", "leclerc", "norris")
+    ):
+        score += 1.2
+    if article.section == "culture" and any(
+        _keyword_hit(text, kw)
+        for kw in ("cs2", "counter-strike", "faze", "esports", "电子竞技", "海贼王", "one piece")
+    ):
+        score += 1.2
+    if article.section == "tech" and any(
+        _keyword_hit(text, kw)
+        for kw in ("iphone", "ipad", "macbook", "airpods", "sony", "索尼", "playstation", "ps5", "samsung", "三星", "华为", "小米", "耳机", "手表", "显卡")
+    ):
+        score += 0.8
+
     if len(article.title) < 8:
         score -= 0.4
     if not article.url:
@@ -160,6 +179,7 @@ def _take_diverse(
     pool: list[Article],
     limit: int,
     max_per_source: int = 2,
+    allow_fill: bool = True,
 ) -> list[Article]:
     """同一来源最多取几条，让栏目里的声音更丰富。"""
     picked: list[Article] = []
@@ -172,10 +192,13 @@ def _take_diverse(
         if len(picked) >= limit:
             return picked
 
+    if not allow_fill:
+        return picked
+
     # 如果因为来源限制没凑够，再放开限制补足。
     chosen_ids = {id(a) for a in picked}
     for article in pool:
-        if id(article) in chosen_ids:
+        if id(a) in chosen_ids:
             continue
         picked.append(article)
         if len(picked) >= limit:
@@ -224,6 +247,19 @@ def prepare(articles: list[Article], config: dict, now: datetime | None = None) 
     return _dedupe(scored)
 
 
+_SCIENCE_NOISE = (
+    "streaming", "star trek", "paramount", "trailer", "where to watch",
+    "movie", "tv show", "review", "deal", "watching",
+    "on this day", "this day in", "anniversary",
+)
+_SPORTS_NOISE = ("survey", "poll", "受访", "调查", "问卷")
+_MINOR_FINANCE = ("中间价", "逆回购", "小幅", "微涨", "微跌")
+
+
+def _has_any(text: str, terms: tuple[str, ...]) -> bool:
+    return any(_keyword_hit(text, term) for term in terms)
+
+
 def select(articles: list[Article], config: dict) -> tuple[list[Article], dict[str, list[Article]]]:
     """返回 (今日要闻, {栏目: 文章列表})。"""
     sections = [s for s in config["sections"] if s["id"] != "top"]
@@ -235,7 +271,20 @@ def select(articles: list[Article], config: dict) -> tuple[list[Article], dict[s
     selected: dict[str, list[Article]] = {}
     for section in sections:
         pool = grouped.get(section["id"], [])
-        selected[section["id"]] = _take_diverse(pool, int(section.get("limit", 4)))
+        sid = section["id"]
+        filtered = pool
+        if sid == "science":
+            filtered = [a for a in pool if not _has_any(a.title.lower(), _SCIENCE_NOISE)]
+        elif sid == "sports":
+            filtered = [a for a in pool if not _has_any(a.title.lower(), _SPORTS_NOISE)]
+        elif sid == "finance":
+            filtered = [a for a in pool if not _has_any(a.title.lower(), _MINOR_FINANCE)]
+        if filtered:
+            selected[sid] = _take_diverse(
+                filtered, int(section.get("limit", 4)), allow_fill=False
+            )
+        else:
+            selected[sid] = _take_diverse(pool, int(section.get("limit", 4)))
 
     # 今日要闻从全部候选里挑，不受各栏目条数限制；
     # 再用“每栏目最多 3 条、每来源最多 1 条”保证视角多元。
