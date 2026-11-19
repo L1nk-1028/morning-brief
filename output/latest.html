@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f1ea">
+<title>我的每日早报 · 11月19日</title>
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --paper: #fffdf8;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --line: #e7e1d6;
+    --accent: #b8451f;
+    --accent-soft: #fbe9df;
+    --shadow: 0 10px 30px rgba(76, 55, 35, .07);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 22px 18px 48px; }
+  header.hero {
+    padding: 18px 20px 20px;
+    background: linear-gradient(135deg, #fffaf1 0%, #fdf1e7 100%);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+  }
+  .kicker {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: .12em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 8px; letter-spacing: -.02em; }
+  .date { color: var(--muted); font-size: 14px; margin: 0; }
+  .stats { margin-top: 12px; color: var(--muted); font-size: 12.5px; }
+  .top { margin-top: 18px; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 18px 18px 8px; box-shadow: var(--shadow); }
+  .top h2 { font-size: 16px; margin: 0 0 12px; display: flex; align-items: center; gap: 8px; }
+  .top ol { list-style: none; margin: 0; padding: 0; }
+  .top li { display: flex; gap: 12px; padding: 11px 0; border-top: 1px dashed var(--line); }
+  .top li:first-child { border-top: 0; }
+  .top-index { font-variant-numeric: tabular-nums; font-size: 12px; font-weight: 700; color: var(--accent); padding-top: 3px; min-width: 20px; }
+  .top a { color: var(--ink); text-decoration: none; font-weight: 600; font-size: 15px; }
+  .top a:active { color: var(--accent); }
+  .top-source { display: block; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+  .section { margin-top: 28px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin: 0 2px 10px; }
+  .section-head h2 { font-size: 18px; margin: 0; letter-spacing: -.01em; }
+  .emoji { margin-right: 7px; }
+  .count { font-size: 11.5px; color: var(--muted); }
+  .item { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 15px 16px; margin-bottom: 10px; box-shadow: 0 4px 14px rgba(76,55,35,.04); }
+  .item-head { display: flex; gap: 10px; }
+  .item-body { min-width: 0; flex: 1; }
+  .rank { font-size: 11px; font-weight: 700; color: var(--accent); padding-top: 4px; }
+  .item h3 { font-size: 16.5px; line-height: 1.45; margin: 0 0 5px; font-weight: 650; }
+  .title-link { color: var(--ink); text-decoration: none; }
+  .title-link:active { color: var(--accent); }
+  .meta { color: var(--muted); font-size: 11.5px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .dot { opacity: .5; }
+  .summary { color: #4b5563; font-size: 13.5px; margin: 8px 0 0; }
+  .why { margin: 9px 0 0; padding: 7px 9px; background: #faf4e9; border-radius: 8px; color: #6b4b2a; font-size: 12.5px; }
+  .why span { display: inline-block; font-weight: 700; color: var(--accent); margin-right: 6px; }
+  .badge { display: inline-block; vertical-align: 2px; margin-left: 6px; font-size: 9.5px; letter-spacing: .04em; color: #6b7280; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; font-weight: 600; }
+  footer { margin-top: 34px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+  .errors { margin-top: 14px; color: var(--muted); font-size: 11.5px; }
+  .errors pre { white-space: pre-wrap; word-break: break-word; background: #faf7f1; padding: 10px; border-radius: 10px; }
+  @media (max-width: 420px) {
+    .wrap { padding: 14px 12px 36px; }
+    h1 { font-size: 23px; }
+    header.hero { padding: 16px; border-radius: 15px; }
+    .item { padding: 13px 13px; border-radius: 14px; }
+    .item h3 { font-size: 15.5px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <span class="kicker">DAILY BRIEF</span>
+    <h1>我的每日早报</h1>
+    <p class="date">2026年11月19日 · 星期四 · 早上好</p>
+    <p class="stats">约 12 分钟读完 · 22 个信息源 · 629 条素材中精选</p>
+  </header>
+
+  <section class="top">
+    <h2>⚡ 今日要闻</h2>
+    <ol>
+      <li>
+        <span class="top-index">01</span>
+        <div>
+          <a href="https://www.france24.com/en/europe/20261119-cop31-vanuatu-un-climate-summit-reform-warns-of-backsliding" target="_blank" rel="noopener noreferrer">COP31: Vanuatu calls for UN climate summit reform, warns of backsliding</a>
+          <span class="top-source">France 24</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">02</span>
+        <div>
+          <a href="https://www.npr.org/2026/11/18/nx-s1-6027645/trump-to-meet-with-russias-putin-and-chinas-xi-for-historic-joint-meeting" target="_blank" rel="noopener noreferrer">Trump to meet with Russia&#x27;s Putin and China&#x27;s Xi for historic joint meeting</a>
+          <span class="top-source">NPR · World</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">03</span>
+        <div>
+          <a href="https://www.chinanews.com.cn/gn/2026/11-19/10734494.shtml" target="_blank" rel="noopener noreferrer">“亚太是我们共同发展的天地”——习近平主席出席亚太经合组织工商领导人峰会开幕式并发表主旨演讲侧记</a>
+          <span class="top-source">中新网 · 国内</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">04</span>
+        <div>
+          <a href="https://www.chinanews.com.cn/gj/2026/11-19/10734440.shtml" target="_blank" rel="noopener noreferrer">以军发表声明：在加沙地带打死两名哈马斯指挥官</a>
+          <span class="top-source">中新网 · 国际</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">05</span>
+        <div>
+          <a href="https://www.theverge.com/policy/1036749/trump-ai-chip-data-center-us-philippines-pax-silica" target="_blank" rel="noopener noreferrer">Trump’s latest land grab is an AI hub in the Philippines</a>
+          <span class="top-source">The Verge</span>
+        </div>
+      </li></ol>
+  </section>
+
+  
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🇨🇳</span>国内时政</h2>
+        <span class="count">4 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gn/2026/11-19/10734494.shtml" target="_blank" rel="noopener noreferrer">“亚太是我们共同发展的天地”——习近平主席出席亚太经合组织工商领导人峰会开幕式并发表主旨演讲侧记</a></h3>
+          <div class="meta"><span>中新网 · 国内</span><span class="dot">·</span><span>9 分钟前</span></div>
+          <p class="summary">“让我们携起手来，以开放纾发展之困，以创新聚增长之势，以合作谋共享之福，建设亚太共同体，共创亚太光明未来！”</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gn/2026/11-19/10734509.shtml" target="_blank" rel="noopener noreferrer">习近平主持亚太经合组织第三十三次领导人非正式会议并发表重要讲话</a></h3>
+          <div class="meta"><span>中新网 · 国内</span><span class="dot">·</span><span>12 分钟前</span></div>
+          <p class="summary">新华社深圳11月19日电(记者孙奕、孙飞)11月19日上午，国家主席习近平在深圳主持亚太经合组织第三十三次领导人非正式会议，并发表题为《建设亚太共同体，续写“亚太奇迹”新篇章》的重要讲话。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gn/2026/11-19/10734506.shtml" target="_blank" rel="noopener noreferrer">台企扎根“医疗特区”：海南自贸港政策有吸引力</a></h3>
+          <div class="meta"><span>中新网 · 国内</span><span class="dot">·</span><span>8 分钟前</span></div>
+          <p class="summary">中新网海南琼海11月19日电 题：台企扎根“医疗特区”：海南自贸港政策有吸引力</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gn/2026/11-19/10734441.shtml" target="_blank" rel="noopener noreferrer">我国成功发射实践二十四号卫星</a></h3>
+          <div class="meta"><span>中新网 · 国内</span><span class="dot">·</span><span>3 小时前</span></div>
+          <p class="summary">北京时间2026年11月19日6时51分，我国在太原卫星发射中心使用长征二号丁运载火箭，成功将实践二十四号卫星发射升空，卫星顺利进入预定轨道，发射任务取得圆满成功。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🌍</span>国际时政</h2>
+        <span class="count">5 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gj/2026/11-19/10734442.shtml" target="_blank" rel="noopener noreferrer">中国驻欧盟使团举办专题讲座阐释台湾问题中方原则立场</a></h3>
+          <div class="meta"><span>中新网 · 国际</span><span class="dot">·</span><span>2 小时前</span></div>
+          <p class="summary">中新社布鲁塞尔11月18日电 (记者 德永健)中国驻欧盟使团17日在布鲁塞尔举办专题讲座，阐释台湾问题中方原则立场和政策主张。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gj/2026/11-19/10734440.shtml" target="_blank" rel="noopener noreferrer">以军发表声明：在加沙地带打死两名哈马斯指挥官</a></h3>
+          <div class="meta"><span>中新网 · 国际</span><span class="dot">·</span><span>3 小时前</span></div>
+          <p class="summary">中新网11月19日电 综合外媒报道，当地时间18日，以色列国防军和以色列国家安全总局(辛贝特)发表联合声明称，17日在加沙地带的两起打击中，打死了两名巴勒斯坦伊斯兰抵抗运动(哈马斯)指挥官。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.france24.com/en/europe/20261119-cop31-vanuatu-un-climate-summit-reform-warns-of-backsliding" target="_blank" rel="noopener noreferrer">COP31: Vanuatu calls for UN climate summit reform, warns of backsliding</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>France 24</span><span class="dot">·</span><span>15 分钟前</span></div>
+          <p class="summary">Vanuatu&#x27;s Environment Minister Ralph Regenvanu has called for changes to the UN climate summit process, accusing a small group of countries of blocking progress and warning that COP31 risks reversing previous commitments.</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.france24.com/en/asia-pacific/20261119-xi-trump-putin-talks-live-china-us-russia-leaders-hold-landmark-three-way-meeting" target="_blank" rel="noopener noreferrer">Xi-Trump-Putin talks live: China, US and Russia leaders to hold landmark three-way meeting</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>France 24</span><span class="dot">·</span><span>28 分钟前</span></div>
+          <p class="summary">The leaders of China, the US and Russia are set to hold a first-of-its-kind trilateral meeting on Thursday in the Chinese city of Shenzhen, on the sidelines of an APEC summit.</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://news.un.org/feed/view/zh/story/2026/11/1143225" target="_blank" rel="noopener noreferrer">第31届气候变化大会僵局持续，各国启动新一轮“气候承诺核查”</a></h3>
+          <div class="meta"><span>联合国新闻 · 中文</span><span class="dot">·</span><span>14 小时前</span></div>
+          <p class="summary">随着在土耳其安塔利亚举行的第31届联合国气候变化大会闭幕时限日益临近，各国于周三启动了一项新的全球性核查，以检验气候承诺是否得到履行。与此同时，各国部长在峰会的一些最棘手问题上仍陷于僵局：谁来买单、全球摆脱化石燃料的速度有多快，以及如果较贫穷国家无力承担，更绿色的未来能否被称为“公正”。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🤖</span>AI 与科技</h2>
+        <span class="count">4 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.theverge.com/tech/1037448/elon-musk-ukraine-starlink-starshield-nyt-dealbook" target="_blank" rel="noopener noreferrer">Elon Musk tries to explain what’s going on with Ukraine and Starlink</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>The Verge</span><span class="dot">·</span><span>35 分钟前</span></div>
+          <p class="summary">Elon Musk said Ukrainian president Volodymyr Zelenskyy is lying about disruptions to Starshield in Ukraine and that he&#x27;s trying to misuse SpaceX&#x27;s consumer service, Starlink, for military purposes.</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ifanr.com/1690255?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" target="_blank" rel="noopener noreferrer">早报｜GTA6开售，评分破纪录/大疆多款相机涨价/豆包工作三个月日活破800万</a></h3>
+          <div class="meta"><span>爱范儿</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">· Google 发布 Gemini 4 Neon，主打复杂任务与更低单次成本 · 英伟达员工大会：董事会不让黄仁勋回归，临时 CEO 承诺涨薪 · 英特尔再裁全球 IT 员工，继续推进组织精简 #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.theverge.com/ai-artificial-intelligence/1037151/school-districts-ditching-google" target="_blank" rel="noopener noreferrer">The nation’s largest school districts consider ditching Google Search</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>The Verge</span><span class="dot">·</span><span>2 小时前</span></div>
+          <p class="summary">New York, Los Angeles, and Chicago schools are considering Google alternatives after the company said it will disable Search for schools that opt out of its AI features, according to The New York Times.</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://sspai.com/post/119239" target="_blank" rel="noopener noreferrer">派早报：Apple 年度应用、TGA 2026 分别公布入围名单等</a></h3>
+          <div class="meta"><span>少数派</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">AMD 更新虚幻引擎 FSR 插件、Google Wallet 登陆 iOS 等。 查看全文</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">📈</span>财经与市场</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/cj/2026/11-19/10734499.shtml" target="_blank" rel="noopener noreferrer">11月19日人民币对美元中间价报6.7128 下调10个基点</a></h3>
+          <div class="meta"><span>中新网 · 财经</span><span class="dot">·</span><span>22 分钟前</span></div>
+          <p class="summary">中新网11月19日电 据中国外汇交易中心网站消息，中国人民银行授权中国外汇交易中心公布，2026年11月19日银行间外汇市场人民币汇率中间价为：1美元对人民币6.7128元，下调10个基点。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/cj/2026/11-19/10734496.shtml" target="_blank" rel="noopener noreferrer">A股开盘：超3300只个股飘绿，三大指数集体低开</a></h3>
+          <div class="meta"><span>中新网 · 财经</span><span class="dot">·</span><span>40 分钟前</span></div>
+          <p class="summary">A股开盘：超3300只个股飘绿，三大指数集体低开；电信、保险上涨；贵金属、半导体、通信设备下跌</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/cj/2026/11-19/10734495.shtml" target="_blank" rel="noopener noreferrer">11月19日央行开展7675亿元隔夜逆回购操作</a></h3>
+          <div class="meta"><span>中新网 · 财经</span><span class="dot">·</span><span>22 分钟前</span></div>
+          <p class="summary">中新网11月19日电 据中国人民银行网站消息，2026年11月19日中国人民银行以固定利率、数量招标方式开展了7675亿元隔夜逆回购操作，全额满足了一级交易商需求。具体情况如下：</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🚀</span>科学 · 太空</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.space.com/entertainment/space-movies-shows/whether-you-want-star-trek-strange-new-worlds-or-the-pure-nostalgia-of-the-original-series-this-limited-time-usd2-99-paramount-streaming-deal-gets-you-both" target="_blank" rel="noopener noreferrer">Whether you want Star Trek: Strange New Worlds or the pure nostalgia of The Original Series, this limited-time $2.99 Paramount+ streaming deal gets you both</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Space.com</span><span class="dot">·</span><span>2 小时前</span></div>
+          <p class="summary">This year marked the 60th anniversary of the broadcast of the first-ever Star Trek episode, &#x27;The Man Trap&#x27;. Since 1966, the franchise has grown and expanded into new seasons with a huge cast of actors, with &#x27;Strange New Worlds&#x27; releasing its season four finale…</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.space.com/space-exploration/on-this-day-in-space-november-18-2026" target="_blank" rel="noopener noreferrer">On this day in space! Nov. 18, 2013: NASA launches MAVEN spacecraft to Mars to find out how the Red Planet lost its water</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Space.com</span><span class="dot">·</span><span>5 小时前</span></div>
+          <p class="summary">On Nov. 18, 2013, NASA launched the MAVEN spacecraft to Mars. The name of NASA&#x27;s MAVEN spacecraft stands for Mars Atmosphere and Volatile EvolutioN.</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.sciencedaily.com/releases/2026/11/261116023358.htm" target="_blank" rel="noopener noreferrer">New discovery reveals what may be holding back room-temperature superconductors</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>ScienceDaily</span><span class="dot">·</span><span>13 小时前</span></div>
+          <p class="summary">A major breakthrough in superconductivity research has revealed that one of the essential ingredients for electricity to flow without resistance can exist at room temperature.</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🏅</span>体育</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/ty/2026/11-19/10734473.shtml" target="_blank" rel="noopener noreferrer">年轻人看体育赛事是在看什么 超半数受访青年从竞体赛事中学会了接纳输赢</a></h3>
+          <div class="meta"><span>中新网 · 体育</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">强势横扫、黑马逆袭、百炼成钢……如今，竞技体育赛事吸引了越来越多年轻人的目光。近日，中国青年报社社会调查中心联合问卷网(wenjuan.com)对1048名观看过竞技体育赛事的青年开展的调查显示，竞技对抗带来的悬念与刺激感是受访青年观看赛事的首要原因。篮球、足球、乒乓球是受访青年最青睐的三项竞技项目。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/ty/2026/11-18/10734363.shtml" target="_blank" rel="noopener noreferrer">第三届CBA俱乐部杯（银川赛区）开赛</a></h3>
+          <div class="meta"><span>中新网 · 体育</span><span class="dot">·</span><span>13 小时前</span></div>
+          <p class="summary">中新网银川11月18日电 (记者 杨迪)第三届中国人寿·CBA俱乐部杯(银川赛区)18日在宁夏体育馆开赛，6支职业篮球队齐聚银川展开角逐。揭幕战中，新疆广汇能源90:77战胜合肥狂风。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/ty/2026/11-18/10734400.shtml" target="_blank" rel="noopener noreferrer">首届黑龙江省高校足球超级联赛落幕 “实体+电竞”融合赛事赋能冰雪文旅</a></h3>
+          <div class="meta"><span>中新网 · 体育</span><span class="dot">·</span><span>12 小时前</span></div>
+          <p class="summary">中新网哈尔滨11月18日电 (韩雪)11月18日，首届黑龙江省高校足球超级联赛第一阶段H8联赛闭幕式暨颁奖仪式在哈尔滨举办。赛事创新采用“实体足球+足球电竞”虚实融合模式，同步启动后续跨区域赛事，助力黑龙江冰雪文体与青年文旅融合发展。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🎮</span>游戏 · 动漫 · 文化</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.gcores.com/articles/222514" target="_blank" rel="noopener noreferrer">Rogue动作游戏《恸哭幽光》Steam版将于12月1日发售</a></h3>
+          <div class="meta"><span>机核</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">由 FURYU CORPORATION 打造的 Rogue 动作游戏《恸哭幽光》将于12月1日发售。 游戏制作人表示，本作从发售约一个月前起，便以留有充足时间的日程推进审核申请，并完成了所需的相关工作。然而，由于V社的审核积压，所需时间已超出通常周期，因此做出了延期的艰难决定。 FURYU CORPORATION 表示，自 Nintendo Switch 2版及 PlayStation 5版发售以来，团队也在认真对待大家提出的问题报告与意见。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/cul/2026/11-19/10734460.shtml" target="_blank" rel="noopener noreferrer">“考古中国”成果上新 揭开哪些历史谜题？</a></h3>
+          <div class="meta"><span>中新网 · 文化</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">国家文物局昨天(18日)发布了长江文明溯源最新考古成果，分别是四川遂宁桃花河遗址、浙江杭州良渚反山遗址、江西九江荞麦岭遗址群岭头上遗址、湖北云梦老虎墩墓地。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.gcores.com/articles/222515" target="_blank" rel="noopener noreferrer">德国万得城门店推出代下载《GTA6》服务，售价29.99欧元</a></h3>
+          <div class="meta"><span>机核</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">近日，德国大型电子产品零售连锁万得城的一家门店推出了颇具争议的线下付费服务。玩家只要支付29.99欧元（约合219元），便可使用门店的高速网络线路，店员会在60分钟内帮玩家将《GTA6》下载并安装到主机上。 需要注意的是，不发售实体盘的《GTA6》的安装体积高达约212GB，堪称近年来体量最庞大的主机游戏之一。对于宽带基础设施长期备受诟病的德国而言，如此庞大的数据包对不少家庭网络构成了考验。在光纤覆盖率较低的乡村或老旧城区，下载耗时甚至达到8到10个小时。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+
+  <footer>
+    <div>由 Morning Brief 自动生成 · 10:15（北京时间）</div>
+    <div>部分外媒内容保留英文原文；接入 AI 后将自动生成中文摘要。</div>
+    <details class="errors"><summary>14 个源暂时不可用</summary><pre>NASA：HTTP 429
+Financial Times：网络错误：[WinError 10061] 由于目标计算机积极拒绝，无法连接。
+Polygon：RemoteDisconnected: Remote end closed connection without response
+Anime News Network：HTTP 403
+BBC World：网络错误：timed out
+Al Jazeera：网络错误：timed out
+The Guardian · World：网络错误：timed out
+Bloomberg · Markets：网络错误：timed out
+BBC 中文：网络错误：timed out
+德国之声 · 中文：网络错误：timed out
+法广 · 中文：网络错误：timed out
+The Guardian · Sport：网络错误：timed out</pre></details>
+  </footer>
+</div>
+</body>
+</html>
