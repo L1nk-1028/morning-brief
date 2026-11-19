@@ -1,0 +1,529 @@
+{
+  "timezone": "Asia/Shanghai",
+  "report": {
+    "title": "我的每日早报",
+    "greeting": "早上好",
+    "top_count": 5,
+    "max_age_hours": 36,
+    "max_items_per_source": 80,
+    "output_dir": "output",
+    "site_dir": "docs",
+    "allow_undated": false
+  },
+  "interests": {
+    "AI 与前沿科技": [
+      "ai",
+      "人工智能",
+      "大模型",
+      "模型",
+      "芯片",
+      "半导体",
+      "算力",
+      "机器人",
+      "openai",
+      "deepseek",
+      "nvidia",
+      "英伟达",
+      "谷歌",
+      "微软",
+      "苹果",
+      "特斯拉",
+      "自动驾驶",
+      "量子",
+      "6g",
+      "数据中心",
+      "算法"
+    ],
+    "国际政治与地缘": [
+      "美国",
+      "中国",
+      "俄罗斯",
+      "乌克兰",
+      "以色列",
+      "伊朗",
+      "加沙",
+      "特朗普",
+      "普京",
+      "习近平",
+      "欧盟",
+      "北约",
+      "联合国",
+      "峰会",
+      "制裁",
+      "停火",
+      "大选",
+      "外交",
+      "关税",
+      "中东",
+      "台海",
+      "朝鲜",
+      "日本",
+      "韩国"
+    ],
+    "财经与市场": [
+      "美联储",
+      "降息",
+      "加息",
+      "通胀",
+      "股市",
+      "美股",
+      "a股",
+      "港股",
+      "债券",
+      "黄金",
+      "原油",
+      "汇率",
+      "人民币",
+      "美元",
+      "比特币",
+      "英伟达",
+      "财报",
+      "并购",
+      "IPO",
+      "关税",
+      "贸易"
+    ],
+    "科学、太空与探索": [
+      "nasa",
+      "spacex",
+      "火星",
+      "月球",
+      "太空",
+      "天文",
+      "望远镜",
+      "火箭",
+      "气候",
+      "物理",
+      "生物",
+      "基因",
+      "医学",
+      "考古",
+      "深海",
+      "能源"
+    ],
+    "体育": [
+      "nba",
+      "足球",
+      "英超",
+      "欧冠",
+      "世界杯",
+      "奥运",
+      "网球",
+      "f1",
+      "篮球",
+      "梅西",
+      "c罗",
+      "詹姆斯",
+      "库里",
+      "国足",
+      "乒乓"
+    ],
+    "游戏、动漫与流行文化": [
+      "游戏",
+      "steam",
+      "任天堂",
+      "switch",
+      "playstation",
+      "xbox",
+      "原神",
+      "动漫",
+      "动画",
+      "漫画",
+      "电影",
+      "剧集",
+      "票房",
+      "音乐",
+      "综艺",
+      "二次元"
+    ]
+  },
+  "sections": [
+    {
+      "id": "top",
+      "title": "今日要闻",
+      "emoji": "⚡",
+      "limit": 5
+    },
+    {
+      "id": "china",
+      "title": "国内时政",
+      "emoji": "🇨🇳",
+      "limit": 4
+    },
+    {
+      "id": "world",
+      "title": "国际时政",
+      "emoji": "🌍",
+      "limit": 5
+    },
+    {
+      "id": "tech",
+      "title": "AI 与科技",
+      "emoji": "🤖",
+      "limit": 4
+    },
+    {
+      "id": "finance",
+      "title": "财经与市场",
+      "emoji": "📈",
+      "limit": 3
+    },
+    {
+      "id": "science",
+      "title": "科学 · 太空",
+      "emoji": "🚀",
+      "limit": 3
+    },
+    {
+      "id": "sports",
+      "title": "体育",
+      "emoji": "🏅",
+      "limit": 3
+    },
+    {
+      "id": "culture",
+      "title": "游戏 · 动漫 · 文化",
+      "emoji": "🎮",
+      "limit": 3
+    }
+  ],
+  "sources": [
+    {
+      "id": "chinanews_world",
+      "name": "中新网 · 国际",
+      "url": "https://www.chinanews.com.cn/rss/world.xml",
+      "section": "world",
+      "lang": "zh",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "bbc_world",
+      "name": "BBC World",
+      "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "section": "world",
+      "lang": "en",
+      "weight": 1.3,
+      "enabled": true
+    },
+    {
+      "id": "guardian_world",
+      "name": "The Guardian · World",
+      "url": "https://www.theguardian.com/world/rss",
+      "section": "world",
+      "lang": "en",
+      "weight": 1.2,
+      "enabled": true
+    },
+    {
+      "id": "npr_world",
+      "name": "NPR · World",
+      "url": "https://feeds.npr.org/1004/rss.xml",
+      "section": "world",
+      "lang": "en",
+      "weight": 1.1,
+      "enabled": true
+    },
+    {
+      "id": "aljazeera_all",
+      "name": "Al Jazeera",
+      "url": "https://www.aljazeera.com/xml/rss/all.xml",
+      "section": "world",
+      "lang": "en",
+      "weight": 1.1,
+      "enabled": true
+    },
+    {
+      "id": "france24",
+      "name": "France 24",
+      "url": "https://www.france24.com/en/rss",
+      "section": "world",
+      "lang": "en",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "un_news",
+      "name": "UN News",
+      "url": "https://news.un.org/feed/subscribe/en/news/all/rss.xml",
+      "section": "world",
+      "lang": "en",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "globaltimes",
+      "name": "Global Times",
+      "url": "https://www.globaltimes.cn/rss/outbrain.xml",
+      "section": "world",
+      "lang": "en",
+      "weight": 0.9,
+      "enabled": true
+    },
+    {
+      "id": "mit_tech",
+      "name": "MIT Technology Review",
+      "url": "https://www.technologyreview.com/feed/",
+      "section": "tech",
+      "lang": "en",
+      "weight": 1.2,
+      "enabled": true
+    },
+    {
+      "id": "theverge",
+      "name": "The Verge",
+      "url": "https://www.theverge.com/rss/index.xml",
+      "section": "tech",
+      "lang": "en",
+      "weight": 1.1,
+      "enabled": true
+    },
+    {
+      "id": "ars",
+      "name": "Ars Technica",
+      "url": "https://feeds.arstechnica.com/arstechnica/index",
+      "section": "tech",
+      "lang": "en",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "36kr",
+      "name": "36 氪",
+      "url": "https://www.36kr.com/feed",
+      "section": "tech",
+      "lang": "zh",
+      "weight": 1.2,
+      "enabled": true
+    },
+    {
+      "id": "sspai",
+      "name": "少数派",
+      "url": "https://sspai.com/feed",
+      "section": "tech",
+      "lang": "zh",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "ifanr",
+      "name": "爱范儿",
+      "url": "https://www.ifanr.com/feed",
+      "section": "tech",
+      "lang": "zh",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "wsj_markets",
+      "name": "WSJ · Markets",
+      "url": "https://feeds.a.dj.com/rss/RSSMarketsMain.xml",
+      "section": "finance",
+      "lang": "en",
+      "weight": 1.3,
+      "enabled": true
+    },
+    {
+      "id": "ft_home",
+      "name": "Financial Times",
+      "url": "https://www.ft.com/rss/home",
+      "section": "finance",
+      "lang": "en",
+      "weight": 1.2,
+      "enabled": true
+    },
+    {
+      "id": "bloomberg_markets",
+      "name": "Bloomberg · Markets",
+      "url": "https://feeds.bloomberg.com/markets/news.rss",
+      "section": "finance",
+      "lang": "en",
+      "weight": 1.1,
+      "enabled": true
+    },
+    {
+      "id": "space_com",
+      "name": "Space.com",
+      "url": "https://www.space.com/feeds/all",
+      "section": "science",
+      "lang": "en",
+      "weight": 1.1,
+      "enabled": true
+    },
+    {
+      "id": "sciencedaily",
+      "name": "ScienceDaily",
+      "url": "https://www.sciencedaily.com/rss/top/science.xml",
+      "section": "science",
+      "lang": "en",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "nasa",
+      "name": "NASA",
+      "url": "https://www.nasa.gov/rss/dyn/breaking_news.rss",
+      "section": "science",
+      "lang": "en",
+      "weight": 1.3,
+      "enabled": true
+    },
+    {
+      "id": "nature",
+      "name": "Nature",
+      "url": "https://www.nature.com/nature.rss",
+      "section": "science",
+      "lang": "en",
+      "weight": 1.2,
+      "enabled": true
+    },
+    {
+      "id": "gcores",
+      "name": "机核",
+      "url": "https://www.gcores.com/rss",
+      "section": "culture",
+      "lang": "zh",
+      "weight": 1.1,
+      "enabled": true
+    },
+    {
+      "id": "polygon",
+      "name": "Polygon",
+      "url": "https://www.polygon.com/rss/index.xml",
+      "section": "culture",
+      "lang": "en",
+      "weight": 1.1,
+      "enabled": true
+    },
+    {
+      "id": "variety",
+      "name": "Variety",
+      "url": "https://variety.com/feed/",
+      "section": "culture",
+      "lang": "en",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "ann",
+      "name": "Anime News Network",
+      "url": "https://www.animenewsnetwork.com/all/rss.xml",
+      "section": "culture",
+      "lang": "en",
+      "weight": 0.9,
+      "enabled": true
+    },
+    {
+      "id": "chinanews_china",
+      "name": "中新网 · 国内",
+      "url": "https://www.chinanews.com.cn/rss/china.xml",
+      "section": "china",
+      "lang": "zh",
+      "weight": 1.2,
+      "enabled": true
+    },
+    {
+      "id": "chinanews_finance",
+      "name": "中新网 · 财经",
+      "url": "https://www.chinanews.com.cn/rss/finance.xml",
+      "section": "finance",
+      "lang": "zh",
+      "weight": 1.1,
+      "enabled": true
+    },
+    {
+      "id": "chinanews_sports",
+      "name": "中新网 · 体育",
+      "url": "https://www.chinanews.com.cn/rss/sports.xml",
+      "section": "sports",
+      "lang": "zh",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "chinanews_culture",
+      "name": "中新网 · 文化",
+      "url": "https://www.chinanews.com.cn/rss/culture.xml",
+      "section": "culture",
+      "lang": "zh",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "un_news_zh",
+      "name": "联合国新闻 · 中文",
+      "url": "https://news.un.org/feed/subscribe/zh/news/all/rss.xml",
+      "section": "world",
+      "lang": "zh",
+      "weight": 1.2,
+      "enabled": true
+    },
+    {
+      "id": "bbc_zh",
+      "name": "BBC 中文",
+      "url": "https://feeds.bbci.co.uk/zhongwen/simp/rss.xml",
+      "section": "world",
+      "lang": "zh",
+      "weight": 1.3,
+      "enabled": true
+    },
+    {
+      "id": "dw_zh",
+      "name": "德国之声 · 中文",
+      "url": "https://rss.dw.com/rdf/rss-chi-all",
+      "section": "world",
+      "lang": "zh",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "rfi_zh",
+      "name": "法广 · 中文",
+      "url": "https://www.rfi.fr/cn/rss",
+      "section": "world",
+      "lang": "zh",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "bbc_sport",
+      "name": "BBC Sport",
+      "url": "https://feeds.bbci.co.uk/sport/rss.xml",
+      "section": "sports",
+      "lang": "en",
+      "weight": 1.1,
+      "enabled": true
+    },
+    {
+      "id": "guardian_sport",
+      "name": "The Guardian · Sport",
+      "url": "https://www.theguardian.com/sport/rss",
+      "section": "sports",
+      "lang": "en",
+      "weight": 1.0,
+      "enabled": true
+    },
+    {
+      "id": "bbc_culture",
+      "name": "BBC · Entertainment",
+      "url": "https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml",
+      "section": "culture",
+      "lang": "en",
+      "weight": 1.0,
+      "enabled": true
+    }
+  ],
+  "push": {
+    "enabled": false,
+    "provider": "serverchan",
+    "sendkey_env": "SERVERCHAN_SENDKEY"
+  },
+  "llm": {
+    "enabled": true,
+    "provider": "github",
+    "api_key_env": "GITHUB_TOKEN",
+    "base_url": "https://models.github.ai/inference",
+    "model": "openai/gpt-4o-mini",
+    "timeout": 120
+  }
+}
