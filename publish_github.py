@@ -211,11 +211,32 @@ def main() -> int:
 
         files = collect_files()
         print(f"准备上传 {len(files)} 个文件 ...")
+        failed: list[str] = []
         for idx, path in enumerate(files, 1):
             rel = path.relative_to(ROOT).as_posix()
             print(f"  [{idx}/{len(files)}] {rel}")
-            upload_file(token, owner, args.repo, path)
+            for attempt in range(1, 4):
+                try:
+                    upload_file(token, owner, args.repo, path)
+                    break
+                except GitHubError as exc:
+                    if attempt == 3:
+                        print(f"    ! 上传失败：{exc}")
+                        failed.append(rel)
+                    else:
+                        print("    ! 网络或接口波动，2 秒后重试 ...")
+                        time.sleep(2)
+            time.sleep(0.15)
 
+        if failed:
+            print("")
+            print(f"有 {len(failed)} 个文件没有上传成功：")
+            for rel in failed:
+                print(f"  - {rel}")
+            print("请重新运行 publish.bat；已上传的文件会自动跳过/覆盖。")
+            return 3
+
+        print(f"全部 {len(files)} 个文件上传完成。")
         if not args.no_pages:
             enable_pages(token, owner, args.repo)
         if not args.no_run:
