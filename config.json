@@ -851,7 +851,8 @@
   "push": {
     "enabled": false,
     "provider": "serverchan",
-    "sendkey_env": "SERVERCHAN_SENDKEY"
+    "sendkey_env": "SERVERCHAN_SENDKEY",
+    "mode": "full"
   },
   "llm": {
     "enabled": false,
