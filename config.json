@@ -513,6 +513,13 @@
       "enabled": true
     }
   ],
+  "translation": {
+    "enabled": true,
+    "provider": "mymemory",
+    "target": "zh-CN",
+    "max_items": 40,
+    "max_summary_chars": 180
+  },
   "push": {
     "enabled": false,
     "provider": "serverchan",
@@ -524,6 +531,10 @@
     "api_key_env": "GITHUB_TOKEN",
     "base_url": "https://models.github.ai/inference",
     "model": "openai/gpt-4o-mini",
+    "fallback_models": [
+      "openai/gpt-4.1-mini",
+      "openai/gpt-4.1"
+    ],
     "timeout": 120
   }
 }
