@@ -18,7 +18,7 @@ from briefing.fetch import BEIJING, fetch_all
 from briefing.llm import enhance
 from briefing.push import PushError, push_report
 from briefing.rank import prepare, select
-from briefing.render import render_html, render_markdown, write_outputs
+from briefing.render import render_html, render_markdown, render_push_digest, write_outputs
 from briefing.translate import translate_articles
 
 ROOT = Path(__file__).resolve().parent
@@ -140,9 +140,22 @@ def main() -> int:
 
     should_push = args.push or bool(config.get("push", {}).get("enabled"))
     if should_push:
-        title = f"{config['report']['title']} · {now.astimezone().strftime('%m月%d日')}"
+        title = f"{config['report']['title']} · {now.astimezone(BEIJING).strftime('%m月%d日')}"
+        mode = str(config.get("push", {}).get("mode", "full")).lower()
+        if mode == "digest":
+            body = render_push_digest(top, sections, config, args.site_url)
+        else:
+            body = markdown
+            if args.site_url:
+                body = (
+                    f"### 👉 [点此阅读排版版]({args.site_url})\n\n"
+                    f"---\n\n{markdown}"
+                )
+        short = "👉 完整早报 + 排版版链接"
         try:
-            result = push_report(config, title, markdown, site_url=args.site_url)
+            result = push_report(
+                config, title, body, short=short, site_url=args.site_url
+            )
             print(f"微信推送：{result.message}")
         except PushError as exc:
             # 推送失败不阻断网页发布；第二天/手动重跑时可以再试。
