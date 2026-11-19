@@ -277,6 +277,16 @@ python run.py --push --no-llm
 
 GitHub Models 本来是免费方案，但在部分网络/仓库环境下会返回一个 `OK` 字符串而不是模型结果，程序会跳过 AI 并显示原因。这不是你的配置错误。
 
+### 英文标题的备用翻译
+
+关闭 AI 时，英文标题用 MyMemory 免费接口翻译。免费接口有每日额度，所以程序会：
+
+- 每 5 条标题拼成一次请求批量翻译；
+- 把翻译结果缓存到 `output/translation_cache.json`，同样的标题不重复请求；
+- 批量失败时再逐条重试。
+
+如果个别标题仍是英文，通常是免费额度或网络波动。可以在 GitHub 添加一个 Secret：`MYMEMORY_EMAIL`，值填你的邮箱，MyMemory 会把免费额度从 5000 字符/天提高到 50000 字符/天。
+
 ### 想启用 AI：推荐 DeepSeek
 
 1. 打开 <https://platform.deepseek.com>，注册并创建 API Key。
