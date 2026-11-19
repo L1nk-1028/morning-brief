@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-11-19T02:15:39.211325+00:00",
+  "total_items": 629,
+  "ok_sources": 22,
+  "failed_sources": 14,
+  "errors": [
+    "NASA：HTTP 429",
+    "Financial Times：网络错误：[WinError 10061] 由于目标计算机积极拒绝，无法连接。",
+    "Polygon：RemoteDisconnected: Remote end closed connection without response",
+    "Anime News Network：HTTP 403",
+    "BBC World：网络错误：timed out",
+    "Al Jazeera：网络错误：timed out",
+    "The Guardian · World：网络错误：timed out",
+    "Bloomberg · Markets：网络错误：timed out",
+    "BBC 中文：网络错误：timed out",
+    "德国之声 · 中文：网络错误：timed out",
+    "法广 · 中文：网络错误：timed out",
+    "The Guardian · Sport：网络错误：timed out",
+    "BBC Sport：网络错误：timed out",
+    "BBC · Entertainment：网络错误：timed out"
+  ]
+}
