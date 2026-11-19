@@ -124,7 +124,7 @@ python run.py --push
 
 ## 5. 改成你真正感兴趣的内容
 
-打开 `config.json`，主要改三个地方：
+你的具体偏好记录在 [PREFERENCES.md](PREFERENCES.md)。下面是如何改 `config.json`：
 
 ### 5.1 兴趣关键词
 
@@ -210,7 +210,7 @@ https://<你的用户名>.github.io/morning-brief/
 
 - **Actions 没有权限提交**：`Settings` → `Actions` → `General` → `Workflow permissions` 选 `Read and write permissions`。
 - **Pages 404**：确认 `Settings` → `Pages` 的 Source 是 `GitHub Actions`，并且 deploy job 成功。
-- **AI 没有生效**：确认 workflow 里有 `permissions: models: read`；如果仓库/组织关闭了 Models，在 `Settings` → `Models` 里启用。
+- **AI 没有生效**：如果网页底部显示 `AI 返回格式异常：OK`，说明 GitHub Models 在当前环境没有返回模型结果。把 `config.json` 的 `llm.enabled` 设为 `false`（默认），或按第 8 节接入 DeepSeek。
 
 ---
 
@@ -247,25 +247,24 @@ python run.py --push --no-llm
 
 ---
 
-## 8. AI 编辑是免费的
+## 8. AI 编辑（可选）
 
-项目默认使用 **GitHub Models**：
+为了让项目零成本先跑通，**默认关闭 AI**（`config.json` 里 `llm.enabled=false`）。
 
-- 地址：`https://models.github.ai/inference`
-- 模型：`openai/gpt-4o-mini`
-- 认证：GitHub Actions 自带的 `GITHUB_TOKEN`
-- 不需要单独申请 API Key，不需要绑卡。
+关闭 AI 时：
 
-它负责：
+- 英文标题会用 MyMemory 免费翻译成中文；
+- 部分英文摘要可能保留原文；
+- 没有“为什么值得看”和 AI 摘要。
 
-- 把英文标题/摘要翻译成中文；
-- 为每条新闻写 2-3 句摘要；
-- 写一句“为什么值得看”；
-- 从候选里挑 5 条今日要闻。
+GitHub Models 本来是免费方案，但在部分网络/仓库环境下会返回一个 `OK` 字符串而不是模型结果，程序会跳过 AI 并显示原因。这不是你的配置错误。
 
-如果 GitHub Models 暂时不可用，程序会自动用 MyMemory 免费翻译英文标题（摘要可能保留英文），早报不会空白。网页底部会显示 AI 未生效的原因，`output/latest.json` 里也有 `llm_error` 字段，方便排查。
+### 想启用 AI：推荐 DeepSeek
 
-如果 GitHub Models 暂时不可用，可以改用 DeepSeek（需要自己充一点点钱，一天几分钱）：
+1. 打开 <https://platform.deepseek.com>，注册并创建 API Key。
+2. 充值少量金额（每天一份早报通常几分钱）。
+3. 在 GitHub 仓库添加 Secret：`DEEPSEEK_API_KEY`。
+4. 把 `config.json` 的 `llm` 改成：
 
 ```json
 "llm": {
@@ -278,9 +277,16 @@ python run.py --push --no-llm
 }
 ```
 
-然后在 GitHub 添加 Secret：`DEEPSEEK_API_KEY`。
+5. 重新运行一次 Actions。
 
-> 本地没有 `GITHUB_TOKEN` 时，AI 会自动跳过，早报仍然能生成，只是英文内容保留原文。这是故意的“优雅降级”。
+开启后它会：
+
+- 把英文标题/摘要翻译成自然中文；
+- 为每条新闻写 2-3 句摘要；
+- 写一句“为什么值得看”；
+- 从候选里挑 5 条今日要闻。
+
+> 本地没有 `GITHUB_TOKEN` 或 `DEEPSEEK_API_KEY` 时，AI 会自动跳过，早报仍然能生成。这是故意的“优雅降级”。
 
 ---
 
