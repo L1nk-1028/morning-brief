@@ -279,12 +279,19 @@ def select(articles: list[Article], config: dict) -> tuple[list[Article], dict[s
             filtered = [a for a in pool if not _has_any(a.title.lower(), _SPORTS_NOISE)]
         elif sid == "finance":
             filtered = [a for a in pool if not _has_any(a.title.lower(), _MINOR_FINANCE)]
+        # 体育/文化同一来源只取 1 条，保证 NBA、F1、CS、动漫都能露面。
+        max_per_source = 1 if sid in {"sports", "culture"} else 2
         if filtered:
             selected[sid] = _take_diverse(
-                filtered, int(section.get("limit", 4)), allow_fill=False
+                filtered,
+                int(section.get("limit", 4)),
+                max_per_source=max_per_source,
+                allow_fill=False,
             )
         else:
-            selected[sid] = _take_diverse(pool, int(section.get("limit", 4)))
+            selected[sid] = _take_diverse(
+                pool, int(section.get("limit", 4)), max_per_source=max_per_source
+            )
 
     # 今日要闻从全部候选里挑，不受各栏目条数限制；
     # 再用“每栏目最多 3 条、每来源最多 1 条”保证视角多元。
