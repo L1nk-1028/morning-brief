@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f1ea">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="晨间简报">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="apple-touch-icon-v4.png">
+<link rel="icon" type="image/png" href="apple-touch-icon-v4.png">
+<link rel="manifest" href="manifest.webmanifest?v=4">
+<title>晨间简报</title>
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --paper: #fffdf8;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --line: #e7e1d6;
+    --accent: #b8451f;
+    --accent-soft: #fbe9df;
+    --shadow: 0 10px 30px rgba(76, 55, 35, .07);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 22px 18px 48px; }
+  header.hero {
+    padding: 18px 20px 20px;
+    background: linear-gradient(135deg, #fffaf1 0%, #fdf1e7 100%);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+  }
+  .kicker {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: .12em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 8px; letter-spacing: -.02em; }
+  .date { color: var(--muted); font-size: 14px; margin: 0; }
+  .stats { margin-top: 12px; color: var(--muted); font-size: 12.5px; }
+  .top { margin-top: 18px; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 18px 18px 8px; box-shadow: var(--shadow); }
+  .top h2 { font-size: 16px; margin: 0 0 12px; display: flex; align-items: center; gap: 8px; }
+  .top ol { list-style: none; margin: 0; padding: 0; }
+  .top li { display: flex; gap: 12px; padding: 11px 0; border-top: 1px dashed var(--line); }
+  .top li:first-child { border-top: 0; }
+  .top-index { font-variant-numeric: tabular-nums; font-size: 12px; font-weight: 700; color: var(--accent); padding-top: 3px; min-width: 20px; }
+  .top a { color: var(--ink); text-decoration: none; font-weight: 600; font-size: 15px; }
+  .top a:active { color: var(--accent); }
+  .top-source { display: block; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+  .section { margin-top: 28px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin: 0 2px 10px; }
+  .section-head h2 { font-size: 18px; margin: 0; letter-spacing: -.01em; }
+  .emoji { margin-right: 7px; }
+  .count { font-size: 11.5px; color: var(--muted); }
+  .item { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 15px 16px; margin-bottom: 10px; box-shadow: 0 4px 14px rgba(76,55,35,.04); }
+  .item-head { display: flex; gap: 10px; }
+  .item-body { min-width: 0; flex: 1; }
+  .rank { font-size: 11px; font-weight: 700; color: var(--accent); padding-top: 4px; }
+  .item h3 { font-size: 16.5px; line-height: 1.45; margin: 0 0 5px; font-weight: 650; }
+  .title-link { color: var(--ink); text-decoration: none; }
+  .title-link:active { color: var(--accent); }
+  .meta { color: var(--muted); font-size: 11.5px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .dot { opacity: .5; }
+  .summary { color: #4b5563; font-size: 13.5px; margin: 8px 0 0; }
+  .why { margin: 9px 0 0; padding: 7px 9px; background: #faf4e9; border-radius: 8px; color: #6b4b2a; font-size: 12.5px; }
+  .why span { display: inline-block; font-weight: 700; color: var(--accent); margin-right: 6px; }
+  .badge { display: inline-block; vertical-align: 2px; margin-left: 6px; font-size: 9.5px; letter-spacing: .04em; color: #6b7280; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; font-weight: 600; }
+  footer { margin-top: 34px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+  .errors { margin-top: 14px; color: var(--muted); font-size: 11.5px; }
+  .errors pre { white-space: pre-wrap; word-break: break-word; background: #faf7f1; padding: 10px; border-radius: 10px; }
+  @media (max-width: 420px) {
+    .wrap { padding: 14px 12px 36px; }
+    h1 { font-size: 23px; }
+    header.hero { padding: 16px; border-radius: 15px; }
+    .item { padding: 13px 13px; border-radius: 14px; }
+    .item h3 { font-size: 15.5px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <span class="kicker">DAILY BRIEF</span>
+    <h1>晨间简报</h1>
+    <p class="date">2026年11月20日 · 星期五 · 早上好</p>
+    <p class="stats">约 9 分钟读完 · 48 个信息源 · 1476 条素材中精选</p>
+  </header>
+
+  <section class="top">
+    <h2>⚡ 今日要闻</h2>
+    <ol>
+      <li>
+        <span class="top-index">01</span>
+        <div>
+          <a href="https://www.rfi.fr/cn/%E4%B8%AD%E5%9B%BD/20261118-%E7%89%B9%E6%9C%97%E6%99%AE-%E6%99%AE%E4%BA%AC%E5%92%8C%E4%B9%A0%E8%BF%91%E5%B9%B3%E6%98%9F%E6%9C%9F%E5%9B%9B%E6%B7%B1%E5%9C%B3%E4%BC%9A%E6%99%A4-%E4%B9%8C%E5%85%8B%E5%85%B0-%E5%8F%B0%E6%B9%BE-%E4%BC%8A%E6%9C%97-%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-%E6%A0%B8%E6%AD%A6%E5%99%A8%E7%AD%89%E9%A2%86%E5%9F%9F%E5%8F%97%E5%85%B3%E6%B3%A8" target="_blank" rel="noopener noreferrer">特朗普、普京和习近平星期四深圳会晤：乌克兰、台湾、伊朗、人工智能、核武器等领域受关注</a>
+          <span class="top-source">法广 · 中文</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">02</span>
+        <div>
+          <a href="https://www.chinanews.com.cn/cj/2026/11-19/10734867.shtml" target="_blank" rel="noopener noreferrer">COP31中欧民间社会气候适应与社区韧性对话会举办</a>
+          <span class="top-source">中新网 · 财经</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">03</span>
+        <div>
+          <a href="https://www.bbc.co.uk/news/articles/cqn70vxp5p4no?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener noreferrer">加州针对英伟达在中国的人工智能芯片展开调查</a>
+          <span class="top-source">BBC World</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">04</span>
+        <div>
+          <a href="https://www.aljazeera.com/video/newsfeed/2026/11/19/aje-onl-nf_mosque-torched-in-israel-sparks-political-backlash-191126?traffic_source=rss" target="_blank" rel="noopener noreferrer">以色列清真寺遭焚烧引发针对内塔尼亚胡的政治反弹</a>
+          <span class="top-source">Al Jazeera</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">05</span>
+        <div>
+          <a href="https://www.chinanews.com.cn/gn/2026/11-19/10734919.shtml" target="_blank" rel="noopener noreferrer">习近平主持中俄美元首会晤</a>
+          <span class="top-source">中新网 · 国内</span>
+        </div>
+      </li></ol>
+  </section>
+
+  
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🇨🇳</span>国内时政</h2>
+        <span class="count">2 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gn/2026/11-20/10734985.shtml" target="_blank" rel="noopener noreferrer">习近平：大国和则世界安，大国斗则世界乱</a></h3>
+          <div class="meta"><span>中新网 · 国内</span><span class="dot">·</span><span>8 小时前</span></div>
+          <p class="summary">11月19日下午，国家主席习近平在深圳同俄罗斯总统普京、美国总统特朗普举行中俄美元首会晤。习近平指出——</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gn/2026/11-19/10734919.shtml" target="_blank" rel="noopener noreferrer">习近平主持中俄美元首会晤</a></h3>
+          <div class="meta"><span>中新网 · 国内</span><span class="dot">·</span><span>11 小时前</span></div>
+          <p class="summary">中新社深圳11月19日电 11月19日下午，中国国家主席习近平在深圳同俄罗斯总统普京、美国总统特朗普举行中俄美元首会晤。三国元首围绕“维护世界和平，促进大国关系战略稳定”主题进行深入讨论。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🌍</span>国际时政</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gj/2026/11-20/10734997.shtml" target="_blank" rel="noopener noreferrer">Anthropic上市 创史上最大IPO融资纪录</a></h3>
+          <div class="meta"><span>中新网 · 国际</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">中新社纽约11月19日电 (记者 王帆)美国人工智能公司Anthropic当地时间19日在纽约纳斯达克证券交易所上市，其首次公开募股(IPO)融资总额超过813亿美元，创下美股史上最大IPO融资规模纪录。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.rfi.fr/cn/%E7%BE%8E%E6%B4%B2/20261119-%E7%BE%8E%E5%9B%BD%E8%8A%AF%E7%89%87%E5%87%BA%E5%8F%A3%E7%AE%A1%E5%88%B6%E9%81%87%E6%8C%91%E6%88%98-cnn%E7%A7%B0%E5%A4%9A%E6%89%80%E4%B8%AD%E5%9B%BD%E9%AB%98%E6%A0%A1%E9%87%87%E8%B4%AD%E8%8B%B1%E4%BC%9F%E8%BE%BE%E8%8A%AF%E7%89%87" target="_blank" rel="noopener noreferrer">美国芯片出口管制遇挑战 CNN称多所中国高校采购英伟达芯片</a></h3>
+          <div class="meta"><span>法广 · 中文</span><span class="dot">·</span><span>6 小时前</span></div>
+          <p class="summary">美国对先进人工智能芯片出口限制的执行面临新的挑战。CNN调查中国高校采购记录发现，至少六所被美国政府列入限制名单的中国高校，近年来曾申报购买受出口管制影响的英伟达（Nvidia）芯片。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.rfi.fr/cn/%E4%B8%AD%E5%9B%BD/20261119-%E7%BE%8E%E5%9B%BD%E6%96%B0%E8%A7%84%E7%94%9F%E6%95%88%EF%BC%8C%E5%8F%B0%E7%A7%AF%E7%94%B5%E4%B8%8E%E4%B8%89%E6%98%9F%E6%9A%82%E5%81%9C%E9%83%A8%E5%88%86%E4%B8%AD%E5%9B%BD%E5%AE%A2%E6%88%B7%E5%85%88%E8%BF%9B%E5%88%B6%E7%A8%8B%E8%AE%A2%E5%8D%95" target="_blank" rel="noopener noreferrer">美国新规生效，台积电与三星暂停部分中国客户先进制程订单</a></h3>
+          <div class="meta"><span>法广 · 中文</span><span class="dot">·</span><span>9 小时前</span></div>
+          <p class="summary">两名知情人士表示，台积电正进一步收紧对中国芯片设计企业的限制，部分此前仍被允许的先进制程订单将会被暂停，并将受影响客户限制在较成熟工艺节点。根据《金融时报》的报导，三星也采取了相似的做法。路透社称，此举可能切断中国企业生产高性能人工智能处理器的最后几条渠道之一，从而使中国发展国产替代芯片、摆脱对英伟达设计并由台积电代工芯片依赖的努力面临更大挑战。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🤖</span>AI · 科技 · 数码</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ithome.com/1/029/765.htm" target="_blank" rel="noopener noreferrer">尽管遭强烈反对：谷歌仍将在 2027 年 1 月全球推广 Android 开发者验证计划，覆盖 Google Play、三星、荣耀、OPPO、vivo、小米、传音</a></h3>
+          <div class="meta"><span>IT之家</span><span class="dot">·</span><span>57 分钟前</span></div>
+          <p class="summary">IT之家 11 月 20 日消息，谷歌今日宣布，Android 开发者身份验证机制将于 2027 年 1 月启动全球推广，覆盖 Google Play、三星、荣耀、OPPO、vivo、小米、传音七大应用分发渠道。 这意味着，未来在经过认证的 Android 设备上安装应用，无论应用来自官方应用商店还是第三方渠道，都将逐步受到开发者身份验证机制约束。 IT之家此前报道，谷歌于 2025 年 8 月首次公布这项政策，要求开发者完成身份验证并注册应用，以便在经过认证的 Android 设备上分发应用。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ithome.com/1/029/772.htm" target="_blank" rel="noopener noreferrer">最高 6% 返现：苹果启动 Apple Card 拉新活动，首年最多可拿 1000 美元</a></h3>
+          <div class="meta"><span>IT之家</span><span class="dot">·</span><span>31 分钟前</span></div>
+          <p class="summary">IT之家 11 月 20 日消息，科技媒体 MacRumors 昨日（11 月 19 日）发布博文，报道称苹果启动新一轮 Apple Card 拉新活动，凡在 12 月 10 日前通过活动页面申请并开通 Apple Card 的 iPhone 用户，开户后首年可享受“每日现金”（Daily Cash）最高 6% 返现翻倍，最高可累计获得 1,000 美元 （IT之家注：现汇率约合 6,692 元人民币） 奖励。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ifanr.com/1690473?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" target="_blank" rel="noopener noreferrer">早报｜苹果招人打造「接管电脑」的AI智能体/史上最大IPO，Anthropic上市/华为官宣Mate 90 Air主打轻薄</a></h3>
+          <div class="meta"><span>爱范儿</span><span class="dot">·</span><span>39 分钟前</span></div>
+          <p class="summary">· 旅行者 1 号距地球达一光日，信号单程需 24 小时 · 网易 UU 远程将上线付费会员，基础远控继续免费 · 腾讯大幅削减元宝投入，微信小微日活达 3000 万 #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">📈</span>财经与市场</h2>
+        <span class="count">2 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ft.com/content/76342072-2781-4b16-ba3b-816a25214483?syn-25a6b1a6=1" target="_blank" rel="noopener noreferrer">美国批准向中国公司出售英伟达和AMD芯片</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Financial Times</span><span class="dot">·</span><span>26 分钟前</span></div>
+          <p class="summary">Pentagon believes some of the groups were associated with the People’s Liberation Army</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ft.com/content/69fd7870-a2cf-4e75-88bc-a1c4036efded?syn-25a6b1a6=1" target="_blank" rel="noopener noreferrer">沽空机构发布有关中国关联的报告后，AMD股价下跌</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Financial Times</span><span class="dot">·</span><span>6 小时前</span></div>
+          <p class="summary">Chipmaker down by as much as 11% following warnings by Hunterbrook in the aftermath of Nvidia scandal</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🚀</span>科学 · 太空</h2>
+        <span class="count">2 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.space.com/space-exploration/voyager/voyager-1-team-unbowed-by-communications-glitch-celebrates-epic-1-light-day-distance-milestone" target="_blank" rel="noopener noreferrer">“旅行者1号”团队不为通信故障所屈服，庆祝史诗般的1光日距离里程碑</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Space.com</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">PASADENA, Calif. – NASA&#x27;s Voyager mission team cheered and wiped away tears here on Thursday (Nov. 19), celebrating a big milestone — Voyager 1 just reached one light-day from Earth , something no other spacecraft has ever done.</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.nasa.gov/directorates/stmd/prizes-challenges-crowdsourcing-program/center-of-excellence-for-collaborative-innovation-coeci/challenge-public-input-on-life-and-the-world-in-2075/" target="_blank" rel="noopener noreferrer">挑战：公众对2075年生活和世界的看法</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>NASA</span><span class="dot">·</span><span>5 小时前</span></div>
+          <p class="summary">NASA’s Transformational Tools and Technologies (TTT) is gathering public perspectives on life today and how the world may change by 2075. This challenge asks for conceptual ideas about life in 2075 across four challenge topics.</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🏅</span>体育 · NBA · F1</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.motorsport.com/f1/news/nike-joins-f1-as-apparel-partner/10875754/?utm_source=RSS&amp;utm_medium=referral&amp;utm_campaign=RSS-F1&amp;utm_term=News&amp;utm_content=www" target="_blank" rel="noopener noreferrer">耐克成为F1的服装合作伙伴</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Motorsport · F1</span><span class="dot">·</span><span>47 分钟前</span></div>
+          <p class="summary">Athletic apparel giant Nike has joined F1 as its official partner and uniform supplier, taking over from Puma at the start of 2027. As was long rumoured, Nike will start supplying F1 personnel with apparel and footwear form the start of next season, a partners…</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.cbssports.com/nba/news/nba-rumors-dejounte-murray-trade-suitors-anthony-davis/" target="_blank" rel="noopener noreferrer">NBA传闻：德章泰·穆雷的追求者浮出水面，安东尼·戴维斯受到追捧等</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>CBS Sports · NBA</span><span class="dot">·</span><span>4 小时前</span></div>
+          <p class="summary">Even just a month into the season, trade chatter is already picking up around a handful of players and teams</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.theguardian.com/sport/2026/nov/19/f1-full-time-race-stewards-2027-season-controversy-fia" target="_blank" rel="noopener noreferrer">F1 将在 2027 赛季引入全职赛事干事，以期杜绝争议</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>The Guardian · Sport</span><span class="dot">·</span><span>2 小时前</span></div>
+          <p class="summary">FIA announces plans to recruit permanent staff Lewis Hamilton has criticised inconsistency Formula One’s governing body has announced it will bring in full-time race stewards for the first time in the sport’s history, beginning in the 2027 season.</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🎮</span>游戏 · 动漫 · 文化</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.gcores.com/articles/222563" target="_blank" rel="noopener noreferrer">安卓模拟器Andarium现已登陆iOS及iPadOS</a></h3>
+          <div class="meta"><span>机核</span><span class="dot">·</span><span>24 分钟前</span></div>
+          <p class="summary">安卓虚拟机 Andarium 现已正式登陆苹果 App Store。作为货真价实的模拟器，Andarium 允许用户在 iPhone 和 iPad 上直接本地运行安卓系统，甚至可以自由安装 APK 文件。与其他的云端方案不同，Andarium 完全在设备本地运行。用户无需连接电脑进行繁琐调试，也无需注册账号，只需创建虚拟机即可启动。 据悉，应用支持直接从iOS系统的文件 App 中导入并安装APK安装包，并内置文件浏览器以实现跨系统文件传输。同时，Andarium 还采取免费下载、自愿打赏的模式。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.polygon.com/steam-machine-possible-price-hike/" target="_blank" rel="noopener noreferrer">Valve警告称Steam Machine价格可能上涨</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Polygon</span><span class="dot">·</span><span>2 小时前</span></div>
+          <p class="summary">As computer components get more expensive, Valve warns its Steam Machine might get more expensive as it struggles to meet demand for the 2TB model.</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://variety.com/2026/tv/news/lance-broadway-dead-mlb-pitcher-agents-of-shield-1236953699/" target="_blank" rel="noopener noreferrer">前美国职棒大联盟投手兼《神盾局特工》演员兰斯·布罗德韦去世，享年43岁</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Variety</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">Lance Broadway, a former Major League Baseball pitcher-turned-actor who appeared in Marvel’s “Agents of S.H.I.E.L.D.,” has died at 43. Broadway was found dead on Nov.</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+
+  <footer>
+    <div>由 Morning Brief 自动生成 · 09:09（北京时间）</div>
+    <div>当前使用备用翻译：英文标题已转为中文；如需 AI 摘要，可在 config.json 接入 DeepSeek。</div>
+    <details class="errors"><summary>3 个源暂时不可用</summary><pre>ESPN · NBA：返回内容不是 RSS/Atom（）
+ESPN · Soccer：返回内容不是 RSS/Atom（）
+ESPN · F1：返回内容不是 RSS/Atom（）</pre></details>
+  </footer>
+</div>
+</body>
+</html>
