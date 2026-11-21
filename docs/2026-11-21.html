@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f1ea">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="晨间简报">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="apple-touch-icon-v4.png">
+<link rel="icon" type="image/png" href="apple-touch-icon-v4.png">
+<link rel="manifest" href="manifest.webmanifest?v=4">
+<title>晨间简报</title>
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --paper: #fffdf8;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --line: #e7e1d6;
+    --accent: #b8451f;
+    --accent-soft: #fbe9df;
+    --shadow: 0 10px 30px rgba(76, 55, 35, .07);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 22px 18px 48px; }
+  header.hero {
+    padding: 18px 20px 20px;
+    background: linear-gradient(135deg, #fffaf1 0%, #fdf1e7 100%);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+  }
+  .kicker {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: .12em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 8px; letter-spacing: -.02em; }
+  .date { color: var(--muted); font-size: 14px; margin: 0; }
+  .stats { margin-top: 12px; color: var(--muted); font-size: 12.5px; }
+  .top { margin-top: 18px; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 18px 18px 8px; box-shadow: var(--shadow); }
+  .top h2 { font-size: 16px; margin: 0 0 12px; display: flex; align-items: center; gap: 8px; }
+  .top ol { list-style: none; margin: 0; padding: 0; }
+  .top li { display: flex; gap: 12px; padding: 11px 0; border-top: 1px dashed var(--line); }
+  .top li:first-child { border-top: 0; }
+  .top-index { font-variant-numeric: tabular-nums; font-size: 12px; font-weight: 700; color: var(--accent); padding-top: 3px; min-width: 20px; }
+  .top a { color: var(--ink); text-decoration: none; font-weight: 600; font-size: 15px; }
+  .top a:active { color: var(--accent); }
+  .top-source { display: block; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+  .section { margin-top: 28px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin: 0 2px 10px; }
+  .section-head h2 { font-size: 18px; margin: 0; letter-spacing: -.01em; }
+  .emoji { margin-right: 7px; }
+  .count { font-size: 11.5px; color: var(--muted); }
+  .item { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 15px 16px; margin-bottom: 10px; box-shadow: 0 4px 14px rgba(76,55,35,.04); }
+  .item-head { display: flex; gap: 10px; }
+  .item-body { min-width: 0; flex: 1; }
+  .rank { font-size: 11px; font-weight: 700; color: var(--accent); padding-top: 4px; }
+  .item h3 { font-size: 16.5px; line-height: 1.45; margin: 0 0 5px; font-weight: 650; }
+  .title-link { color: var(--ink); text-decoration: none; }
+  .title-link:active { color: var(--accent); }
+  .meta { color: var(--muted); font-size: 11.5px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .dot { opacity: .5; }
+  .summary { color: #4b5563; font-size: 13.5px; margin: 8px 0 0; }
+  .why { margin: 9px 0 0; padding: 7px 9px; background: #faf4e9; border-radius: 8px; color: #6b4b2a; font-size: 12.5px; }
+  .why span { display: inline-block; font-weight: 700; color: var(--accent); margin-right: 6px; }
+  .badge { display: inline-block; vertical-align: 2px; margin-left: 6px; font-size: 9.5px; letter-spacing: .04em; color: #6b7280; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; font-weight: 600; }
+  footer { margin-top: 34px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+  .errors { margin-top: 14px; color: var(--muted); font-size: 11.5px; }
+  .errors pre { white-space: pre-wrap; word-break: break-word; background: #faf7f1; padding: 10px; border-radius: 10px; }
+  @media (max-width: 420px) {
+    .wrap { padding: 14px 12px 36px; }
+    h1 { font-size: 23px; }
+    header.hero { padding: 16px; border-radius: 15px; }
+    .item { padding: 13px 13px; border-radius: 14px; }
+    .item h3 { font-size: 15.5px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <span class="kicker">DAILY BRIEF</span>
+    <h1>晨间简报</h1>
+    <p class="date">2026年11月21日 · 星期六 · 早上好</p>
+    <p class="stats">约 9 分钟读完 · 48 个信息源 · 1458 条素材中精选</p>
+  </header>
+
+  <section class="top">
+    <h2>⚡ 今日要闻</h2>
+    <ol>
+      <li>
+        <span class="top-index">01</span>
+        <div>
+          <a href="https://www.aljazeera.com/news/2026/11/20/fossil-fuel-talks-deadlock-pushes-cop31-climate-summit-into-overtime?traffic_source=rss" target="_blank" rel="noopener noreferrer">化石燃料谈判陷入僵局，导致COP31气候峰会延长会期</a>
+          <span class="top-source">Al Jazeera</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">02</span>
+        <div>
+          <a href="https://www.rfi.fr/cn/%E4%B8%AD%E5%9B%BD/20261120-%E7%BE%8E%E6%B0%91%E4%B8%BB%E5%85%9A%E8%AE%AE%E5%91%98%E6%89%B9%E7%89%B9%E6%9C%97%E6%99%AE%E9%81%AD%E4%B9%A0%E8%BF%91%E5%B9%B3%E6%99%AE%E4%BA%AC%E5%88%A9%E7%94%A8-%E6%8C%87%E7%BE%8E%E4%B8%AD%E4%BF%84%E5%B3%B0%E4%BC%9A%E6%AF%AB%E6%97%A0%E6%88%90%E6%9E%9C" target="_blank" rel="noopener noreferrer">美民主党议员批特朗普遭习近平普京利用 指美中俄峰会毫无成果</a>
+          <span class="top-source">法广 · 中文</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">03</span>
+        <div>
+          <a href="https://news.un.org/feed/view/zh/story/2026/11/1143241" target="_blank" rel="noopener noreferrer">约旦河西岸：定居者袭击事件创纪录 联合国敦促以色列保护农民</a>
+          <span class="top-source">联合国新闻 · 中文</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">04</span>
+        <div>
+          <a href="https://www.ithome.com/1/030/296.htm" target="_blank" rel="noopener noreferrer">440 亿美元！阿波罗与高盛完成迄今规模最大 GPU 融资定价，SpaceX 要买英伟达芯片</a>
+          <span class="top-source">IT之家</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">05</span>
+        <div>
+          <a href="https://arstechnica.com/space/2026/11/nasas-new-moon-plan-is-taking-shape-but-some-big-questions-remain/" target="_blank" rel="noopener noreferrer">美国宇航局的新登月计划正在成形，但仍存在一些重大问题</a>
+          <span class="top-source">Ars Technica</span>
+        </div>
+      </li></ol>
+  </section>
+
+  
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🇨🇳</span>国内时政</h2>
+        <span class="count">2 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gn/2026/11-21/10735639.shtml" target="_blank" rel="noopener noreferrer">国产大模型引领全球开源生态 累计下载量突破100亿次</a></h3>
+          <div class="meta"><span>中新网 · 国内</span><span class="dot">·</span><span>11 分钟前</span></div>
+          <p class="summary">国产大模型引领全球开源生态(大数据观察·智能经济新形态)</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gn/2026/11-21/10735634.shtml" target="_blank" rel="noopener noreferrer">国内外专家齐聚广州共商数智技术与运动健康深度融合新路径</a></h3>
+          <div class="meta"><span>中新网 · 国内</span><span class="dot">·</span><span>6 分钟前</span></div>
+          <p class="summary">中新网广州11月21日电 (记者 张璐)2026年广州运动与健康国际学术研讨会(简称“研讨会”)11月19日至21日在广州体育学院举行，吸引了来自德国、英国、澳大利亚及中国多所知名高校与科研机构的顶尖专家齐聚一堂，共商数智技术与运动健康深度融合的新路径。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🌍</span>国际时政</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.rfi.fr/cn/%E4%B8%AD%E5%9B%BD/20261120-%E7%BE%8E%E6%B0%91%E4%B8%BB%E5%85%9A%E8%AE%AE%E5%91%98%E6%89%B9%E7%89%B9%E6%9C%97%E6%99%AE%E9%81%AD%E4%B9%A0%E8%BF%91%E5%B9%B3%E6%99%AE%E4%BA%AC%E5%88%A9%E7%94%A8-%E6%8C%87%E7%BE%8E%E4%B8%AD%E4%BF%84%E5%B3%B0%E4%BC%9A%E6%AF%AB%E6%97%A0%E6%88%90%E6%9E%9C" target="_blank" rel="noopener noreferrer">美民主党议员批特朗普遭习近平普京利用 指美中俄峰会毫无成果</a></h3>
+          <div class="meta"><span>法广 · 中文</span><span class="dot">·</span><span>3 小时前</span></div>
+          <p class="summary">美国总统特朗普（Donald Trump）日前在中国深圳，与中国国家主席习近平及俄罗斯总统普京（Vladimir Putin）举行首次三方峰会，会后虽发表涉及能源供应、联合国改革、国际刑事法院及核扩散等议题的四点“和平宣言”，但未有触及乌克兰及伊朗战争，也未见在核武控制等问题取得具体进展。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.rfi.fr/cn/%E6%94%BF%E6%B2%BB/20261120-%E7%BE%8E%E4%BC%97%E8%AE%AE%E9%99%A2%E6%8A%AB%E9%9C%B2%E8%BF%9188%E4%B8%87%E6%9E%9Aai%E8%8A%AF%E7%89%87%E8%8E%B7%E6%89%B9%E5%87%BA%E5%8F%A3%E4%B8%AD%E5%9B%BD%EF%BC%8C%E5%85%B6%E4%B8%AD%E5%8C%85%E6%8B%AC%E5%9B%BD%E9%98%B2%E9%83%A8%E8%AE%A4%E8%AF%81%E7%9A%84-%E5%86%9B%E5%B7%A5%E4%BC%81%E4%B8%9A" target="_blank" rel="noopener noreferrer">美众议院披露近88万枚AI芯片获批出口中国，其中包括国防部认证的“军工企业”</a></h3>
+          <div class="meta"><span>法广 · 中文</span><span class="dot">·</span><span>13 小时前</span></div>
+          <p class="summary">据CNBC报导，美国众议院外交事务委员会周四公布的文件显示，截至2026年5月，美国商务部负责出口管制与执法的工业与安全局（BIS）已批准向中国企业出售超过87.9万枚人工智能芯片，其中涉及阿里巴巴、腾讯等中国科技公司。而2025年12月至2026年5月期间，美国企业共申请向中国出售约340万枚AI芯片，主要涉及英伟达（Nvidia）和超威半导体（AMD）的产品。其中约87.9万枚获得批准，获批比例约为四分之一。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gj/2026/11-21/10735606.shtml" target="_blank" rel="noopener noreferrer">特朗普：中俄美元首会晤“史无前例”“意义重大”</a></h3>
+          <div class="meta"><span>中新网 · 国际</span><span class="dot">·</span><span>3 小时前</span></div>
+          <p class="summary">新华社华盛顿11月20日电(记者黄强 徐剑梅)美国总统特朗普20日在白宫举行的新闻发布会上表示，日前在中国深圳举行的亚太经合组织领导人非正式会议是一场非常成功的经济会议，美国、中国和俄罗斯三国领导人还举行了首次三方会晤，这是“多年来最具重大意义的国际峰会之一”。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🤖</span>AI · 科技 · 数码</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ithome.com/1/030/307.htm" target="_blank" rel="noopener noreferrer">现价近 7000 欧元的英伟达 RTX 5090 FE 显卡送修后被销毁，平台只愿退原价 2369 欧元</a></h3>
+          <div class="meta"><span>IT之家</span><span class="dot">·</span><span>53 分钟前</span></div>
+          <p class="summary">IT之家 11 月 21 日消息，Reddit 用户 @xw1y 昨日发帖称，自己送修的一张 NVIDIA GeForce RTX 5090 Founders Edition 显卡，疑似在欧洲零售商 Proshop 的维修合作方手中被销毁或丢弃。 据该用户披露，这张 RTX 5090 Founders Edition 32GB 于 2025 年 2 月以为 2,369 欧元 （IT之家注：现汇率约合 17,394 元人民币） 的价格购入。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ithome.com/1/030/295.htm" target="_blank" rel="noopener noreferrer">国际版三星 Galaxy S27 Pro 手机跑分曝光：Exynos 2700 芯片、12GB 内存</a></h3>
+          <div class="meta"><span>IT之家</span><span class="dot">·</span><span>2 小时前</span></div>
+          <p class="summary">IT之家 11 月 21 日消息，型号“SM-S957B”的三星手机昨日（11 月 20 日）现身 GeekBench 跑分库， 7.1.0 版本单核成绩为 3,061 分，多核成绩为 10,967 分，相关线索表明该机上市后为三星 Galaxy S27 Pro。 IT之家注：根据 GSMA IMEI 数据库此前公示的信息，SM-S957B 对应三星 Galaxy S27 Pro，且后缀“B”代表国际市场版本，覆盖欧洲、印度等市场。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ifanr.com/1690759?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" target="_blank" rel="noopener noreferrer">早报｜曝Claude证明黎曼猜想，陶哲轩回应/余承东更正发布会表述：开车不能睡觉/五月天公布Vision Pro演唱会，Apple Store可预约体验</a></h3>
+          <div class="meta"><span>爱范儿</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">· 三星任命手机和存储业务新负责人 · 5499 元起，华为星芒发布首款阔直板手机 OSTA O1 Pro · ColorOS 17 上线跨品牌一碰传 #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">📈</span>财经与市场</h2>
+        <span class="count">2 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ft.com/content/9f3c6ed6-c08f-4710-9683-ee2f5eb25841?syn-25a6b1a6=1" target="_blank" rel="noopener noreferrer">美国科技股在新冠疫情危机以来的最糟糕一周中跌入熊市</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Financial Times</span><span class="dot">·</span><span>3 小时前</span></div>
+          <p class="summary">Shares in Anthropic and Nvidia tumble as fears over the AI spending boom grip Wall Street</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/cj/2026/11-21/10735615.shtml" target="_blank" rel="noopener noreferrer">美股大跌 纳指年内涨幅悉数回吐</a></h3>
+          <div class="meta"><span>中新网 · 财经</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">中新社纽约11月20日电 (记者 王帆)美国股市三大指数20日大幅下跌。其中，纳斯达克综合指数单日跌幅超过5%，年内涨幅悉数回吐。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🚀</span>科学 · 太空</h2>
+        <span class="count">2 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://science.nasa.gov/photojournal/curiosity-spots-drifting-twilight-clouds/" target="_blank" rel="noopener noreferrer">“好奇”号火星车发现漂移的暮光云</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>NASA</span><span class="dot">·</span><span>3 小时前</span></div>
+          <p class="summary">Description NASA’s Curiosity Mars rover captured these drifting clouds on Oct. 31, 2026, the 5,061st Martian day, or sol, of the mission. The rover uses its navigation cameras to capture post-sunset clouds, called twilight clouds, which appear for only a short…</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.nasa.gov/directorates/rtmd/new-nasa-seed-funding-primes-small-businesses-for-innovation/" target="_blank" rel="noopener noreferrer">美国宇航局的新种子基金为小企业创新做好准备</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>NASA</span><span class="dot">·</span><span>4 小时前</span></div>
+          <p class="summary">Awards to small businesses around the country are addressing some of NASA’s most crucial technology needs for exploration of the Moon and Mars while fueling the U.S. space economy.</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🏅</span>体育 · NBA · F1</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.cbssports.com/nba/news/nba-injury-updates-tyrese-haliburton-kawhi-leonard-dylan-harper-brandon-ingram/" target="_blank" rel="noopener noreferrer">NBA伤情最新消息：泰雷斯·哈利伯顿、安东尼·爱德华兹、科怀·伦纳德、迪伦·哈珀等人的最新情况</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>CBS Sports · NBA</span><span class="dot">·</span><span>2 小时前</span></div>
+          <p class="summary">The barrage of injuries to high-profile players has been one of the stories of the NBA season so far</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.motorsport.com/f1/news/f1-set-for-v8-turbo-move-by-2030-season/10875113/?utm_source=RSS&amp;utm_medium=referral&amp;utm_campaign=RSS-F1&amp;utm_term=News&amp;utm_content=www" target="_blank" rel="noopener noreferrer">F1 计划于 2030 年重回 V8 涡轮增压引擎</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Motorsport · F1</span><span class="dot">·</span><span>6 小时前</span></div>
+          <p class="summary">Formula 1 has moved closer to a return to V8 engines from the 2030 season as the FIA announced that a unanimous agreement has been reached between the governing body, F1 management and the power unit manufacturers.</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.bbc.co.uk/sport/formula1/articles/cvj6l7nk611jo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener noreferrer">F1高层同意从2030年起使用V8发动机</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>BBC Sport</span><span class="dot">·</span><span>6 小时前</span></div>
+          <p class="summary">Formula 1 bosses reach a deal that means V8 turbo hybrid engines will replace the current controversial units in 2030.</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🎮</span>游戏 · 动漫 · 文化</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.polygon.com/the-witcher-4-physical-release-cd-projekt-red-ps5/" target="_blank" rel="noopener noreferrer">《巫师4》发布实体版官方最新消息</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Polygon</span><span class="dot">·</span><span>9 分钟前</span></div>
+          <p class="summary">CD Projekt Red is planning a The Witcher 4 physical release, even though it admits it has &quot;no influence&quot; over PS5 and Xbox disc production</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://variety.com/2026/tv/news/melania-trump-series-gaza-israel-children-peace-amazon-1236954718/" target="_blank" rel="noopener noreferrer">在亚马逊剧集首映式上，梅拉尼娅·特朗普在被问及加沙和以色列的儿童时呼吁“和平”</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Variety</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">Amazon Prime Video’s “Melania: The Series” offers a peek into the often-reclusive first lady’s personal life and role inside the White House, including her efforts to provide children in foster care with educational and career opportunities.</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://blog.playstation.com/2026/11/20/official-playstation-podcast-episode-553-peak-gaming/" target="_blank" rel="noopener noreferrer">官方PlayStation播客第553期：游戏巅峰</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>PlayStation Blog</span><span class="dot">·</span><span>7 小时前</span></div>
+          <p class="summary">Email us at PSPodcast@sony.com! Subscribe via Apple Podcasts, Spotify, or download here Hey, y’all! Kristen and Tim dive into what they’ve been playing this week and favorite holiday dishes, while celebrating the launch of Grand Theft Auto VI.</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+
+  <footer>
+    <div>由 Morning Brief 自动生成 · 09:38（北京时间）</div>
+    <div>当前使用备用翻译：英文标题已转为中文；如需 AI 摘要，可在 config.json 接入 DeepSeek。</div>
+    <details class="errors"><summary>3 个源暂时不可用</summary><pre>ESPN · NBA：返回内容不是 RSS/Atom（）
+ESPN · F1：返回内容不是 RSS/Atom（）
+ESPN · Soccer：返回内容不是 RSS/Atom（）</pre></details>
+  </footer>
+</div>
+</body>
+</html>
