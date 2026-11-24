@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f1ea">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="晨间简报">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="apple-touch-icon-v4.png">
+<link rel="icon" type="image/png" href="apple-touch-icon-v4.png">
+<link rel="manifest" href="manifest.webmanifest?v=4">
+<title>晨间简报</title>
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --paper: #fffdf8;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --line: #e7e1d6;
+    --accent: #b8451f;
+    --accent-soft: #fbe9df;
+    --shadow: 0 10px 30px rgba(76, 55, 35, .07);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 22px 18px 48px; }
+  header.hero {
+    padding: 18px 20px 20px;
+    background: linear-gradient(135deg, #fffaf1 0%, #fdf1e7 100%);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+  }
+  .kicker {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: .12em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 8px; letter-spacing: -.02em; }
+  .date { color: var(--muted); font-size: 14px; margin: 0; }
+  .stats { margin-top: 12px; color: var(--muted); font-size: 12.5px; }
+  .top { margin-top: 18px; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 18px 18px 8px; box-shadow: var(--shadow); }
+  .top h2 { font-size: 16px; margin: 0 0 12px; display: flex; align-items: center; gap: 8px; }
+  .top ol { list-style: none; margin: 0; padding: 0; }
+  .top li { display: flex; gap: 12px; padding: 11px 0; border-top: 1px dashed var(--line); }
+  .top li:first-child { border-top: 0; }
+  .top-index { font-variant-numeric: tabular-nums; font-size: 12px; font-weight: 700; color: var(--accent); padding-top: 3px; min-width: 20px; }
+  .top a { color: var(--ink); text-decoration: none; font-weight: 600; font-size: 15px; }
+  .top a:active { color: var(--accent); }
+  .top-source { display: block; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+  .section { margin-top: 28px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin: 0 2px 10px; }
+  .section-head h2 { font-size: 18px; margin: 0; letter-spacing: -.01em; }
+  .emoji { margin-right: 7px; }
+  .count { font-size: 11.5px; color: var(--muted); }
+  .item { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 15px 16px; margin-bottom: 10px; box-shadow: 0 4px 14px rgba(76,55,35,.04); }
+  .item-head { display: flex; gap: 10px; }
+  .item-body { min-width: 0; flex: 1; }
+  .rank { font-size: 11px; font-weight: 700; color: var(--accent); padding-top: 4px; }
+  .item h3 { font-size: 16.5px; line-height: 1.45; margin: 0 0 5px; font-weight: 650; }
+  .title-link { color: var(--ink); text-decoration: none; }
+  .title-link:active { color: var(--accent); }
+  .meta { color: var(--muted); font-size: 11.5px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .dot { opacity: .5; }
+  .summary { color: #4b5563; font-size: 13.5px; margin: 8px 0 0; }
+  .why { margin: 9px 0 0; padding: 7px 9px; background: #faf4e9; border-radius: 8px; color: #6b4b2a; font-size: 12.5px; }
+  .why span { display: inline-block; font-weight: 700; color: var(--accent); margin-right: 6px; }
+  .badge { display: inline-block; vertical-align: 2px; margin-left: 6px; font-size: 9.5px; letter-spacing: .04em; color: #6b7280; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; font-weight: 600; }
+  footer { margin-top: 34px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+  .errors { margin-top: 14px; color: var(--muted); font-size: 11.5px; }
+  .errors pre { white-space: pre-wrap; word-break: break-word; background: #faf7f1; padding: 10px; border-radius: 10px; }
+  @media (max-width: 420px) {
+    .wrap { padding: 14px 12px 36px; }
+    h1 { font-size: 23px; }
+    header.hero { padding: 16px; border-radius: 15px; }
+    .item { padding: 13px 13px; border-radius: 14px; }
+    .item h3 { font-size: 15.5px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <span class="kicker">DAILY BRIEF</span>
+    <h1>晨间简报</h1>
+    <p class="date">2026年11月24日 · 星期二 · 早上好</p>
+    <p class="stats">约 9 分钟读完 · 47 个信息源 · 1458 条素材中精选</p>
+  </header>
+
+  <section class="top">
+    <h2>⚡ 今日要闻</h2>
+    <ol>
+      <li>
+        <span class="top-index">01</span>
+        <div>
+          <a href="https://www.dw.com/zh/cop31气候大会未能通过最终决议-欧盟及130多个国家要求加强气候行动/a-80013909?maca=chi-rss-chi-all-1127-rdf" target="_blank" rel="noopener noreferrer">COP31气候大会未能通过最终决议,欧盟及130多个国家要求加强气候行动</a>
+          <span class="top-source">德国之声 · 中文</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">02</span>
+        <div>
+          <a href="https://www.chinanews.com.cn/gj/2026/11-24/10736730.shtml" target="_blank" rel="noopener noreferrer">外媒：以军空袭加沙致3死 其中含1名联合国工作人员</a>
+          <span class="top-source">中新网 · 国际</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">03</span>
+        <div>
+          <a href="https://www.theguardian.com/world/live/2026/nov/23/russia-ukraine-war-zelenskyy-libya-benghazi-drone-attack-ship-merkury-un-nato-europe-latest-news-updates" target="_blank" rel="noopener noreferrer">欧盟制裁一揽子计划旨在“持续施压”俄罗斯，并“更严厉地打击”其资助乌克兰战争的能力——事态发展回顾</a>
+          <span class="top-source">The Guardian · World</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">04</span>
+        <div>
+          <a href="https://www.ft.com/content/82d3be02-8ac7-4acb-aefa-6e3722ee05cc?syn-25a6b1a6=1" target="_blank" rel="noopener noreferrer">游说特朗普召回被罢免科技公司老板的“作战室”内幕</a>
+          <span class="top-source">Financial Times</span>
+        </div>
+      </li>
+      <li>
+        <span class="top-index">05</span>
+        <div>
+          <a href="https://www.ithome.com/1/031/270.htm" target="_blank" rel="noopener noreferrer">美国俄勒冈州、弗吉尼亚州起诉 SpaceX，指控 Grok AI 生成儿童性虐待图像</a>
+          <span class="top-source">IT之家</span>
+        </div>
+      </li></ol>
+  </section>
+
+  
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🇨🇳</span>国内时政</h2>
+        <span class="count">2 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gn/2026/11-24/10736754.shtml" target="_blank" rel="noopener noreferrer">用新质生产力打造医疗外交新模式——中国医疗方案深化中埃合作</a></h3>
+          <div class="meta"><span>中新网 · 国内</span><span class="dot">·</span><span>8 分钟前</span></div>
+          <p class="summary">中新网11月24日电 11月15日至16日，“丝路心相通”中埃友好交流活动在埃及开罗举行。全国人大常委会副委员长、中国民间组织国际交流促进会会长肖捷出席活动，充分体现了中方对深化中埃合作、增进民间友好往来的高度重视。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gn/2026/11-24/10736776.shtml" target="_blank" rel="noopener noreferrer">官方：航天员黎家盈在空间科学研究等方面很好完成了各项任务</a></h3>
+          <div class="meta"><span>中新网 · 国内</span><span class="dot">·</span><span>8 分钟前</span></div>
+          <p class="summary">中新网酒泉11月24日电 (记者 马帅莎 曾玥)11月24日，神舟二十四号载人飞行任务新闻发布会在酒泉卫星发射中心举行。中国载人航天工程新闻发言人张静波在会上表示，航天员黎家盈在神舟二十三号任务中担任载荷专家，在空间科学研究、技术试验和科普授课等方面很好完成了各项任务。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🌍</span>国际时政</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.chinanews.com.cn/gj/2026/11-24/10736728.shtml" target="_blank" rel="noopener noreferrer">美媒：英伟达股价暴涨超31% 单日市值增加近1万亿美元</a></h3>
+          <div class="meta"><span>中新网 · 国际</span><span class="dot">·</span><span>2 小时前</span></div>
+          <p class="summary">中新网11月24日电 据美国有线电视新闻网(CNN)等美媒报道，当地时间23日，美国纽约股市三大股指大幅上涨。受黄仁勋复职消息提振，英伟达股价当天收盘上涨31.5%。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.rfi.fr/cn/%E6%94%BF%E6%B2%BB/20261123-%E9%BB%84%E4%BB%81%E5%8B%8B%E5%9C%A8%E7%BE%8E%E5%9B%BD%E4%BC%9A%E5%8F%82%E4%BC%97%E4%B8%A4%E9%99%A2%E7%9A%84%E4%BD%9C%E8%AF%81%E7%9B%AE%E5%89%8D%E9%A2%84%E8%AE%A1%E4%BB%8D%E5%B0%86%E6%8C%89%E8%AE%A1%E5%88%92%E8%BF%9B%E8%A1%8C" target="_blank" rel="noopener noreferrer">黄仁勋在美参众两院委员会的作证目前预计仍将按计划进行</a></h3>
+          <div class="meta"><span>法广 · 中文</span><span class="dot">·</span><span>8 小时前</span></div>
+          <p class="summary">英伟达周一宣布恢复黄仁勋的总裁兼首席执行官及董事职务，这一举动可能会打乱美国国会两党议员对这家人工智能巨头进行监管的计划。英伟达董事会的这一决定——以及特朗普（Donald Trump）总统在其中的介入——进一步加剧了特朗普与其所属的共和党之间的紧张关系。此前，部分共和党国会议员已精心筹划，准备在相关丑闻曝光之际，对黄仁勋本人以及针对中国的芯片出口管制措施展开严格审查。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.bbc.com/zhongwen/articles/cvwy0jx7nj84o/trad?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener noreferrer">Nvidia和黃仁勳對美國經濟有多重要？</a></h3>
+          <div class="meta"><span>BBC 中文</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">黃仁勳離職僅11天便重掌英偉達，凸顯他對人工智能產業及美國經濟的重要性。他本人和這家晶片巨頭究竟有多大影響力？</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🤖</span>AI · 科技 · 数码</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ithome.com/1/031/246.htm" target="_blank" rel="noopener noreferrer">马斯克承认 AI 研发落后对手：出租 SpaceXSI 算力比自研 Grok 更赚钱</a></h3>
+          <div class="meta"><span>IT之家</span><span class="dot">·</span><span>2 小时前</span></div>
+          <p class="summary">IT之家 11 月 24 日消息，据《纽约时报》当地时间 11 月 23 日报道，SpaceX 首席执行官埃隆・马斯克近日向员工表示，公司在人工智能（AI）研发方面正落后于 Anthropic、OpenAI 等竞争对手，因此，与其将数据中心算力全部用于自研 AI 产品，不如出租给竞争对手，以获得更高的商业回报。 三名知情人士称，SpaceX 自 5 月以来一直向 Anthropic、谷歌等企业出租数据中心算力，相关业务每月可带来数十亿美元收入。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ithome.com/1/031/258.htm" target="_blank" rel="noopener noreferrer">三星拟扩大西安工厂先进 NAND 产能、升级 V9 闪存产线，扩大面向 AI 数据中心的 eSSD 供应</a></h3>
+          <div class="meta"><span>IT之家</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">IT之家 11 月 24 日消息，据《首尔经济日报》今日报道，三星电子计划将位于中国陕西西安的半导体工厂打造成面向人工智能（AI）数据中心企业级固态硬盘（eSSD）的核心生产基地，重点扩大第九代垂直 NAND 闪存（V9）产能。 截至今年第二季度，三星西安一厂（X1）和二厂（X2）的晶圆月投入能力均为 5 万片，合计达到 10 万片（IT之家注：单位为 300mm 晶圆）。这相当于三星平泽四座工厂月产能总和（20 万片）的一半。三星两地 NAND 工厂的晶圆月产能合计约为 30 万片，其中西安工厂占比约 33%。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ifanr.com/1691119?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" target="_blank" rel="noopener noreferrer">早报｜黄仁勋回归，英伟达股价一夜暴涨31%/《复仇者联盟5》发布终极预告/3399起，荣耀700系列发布</a></h3>
+          <div class="meta"><span>爱范儿</span><span class="dot">·</span><span>1 小时前</span></div>
+          <p class="summary">· 蚂蚁阿福上线视频咨询，同时推出福环和福戒 · 韩国国家资格考试恢复统一收手机，考生还穿上了围裙 · 知乎参投基金间接入股 DeepSeek #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">📈</span>财经与市场</h2>
+        <span class="count">2 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ft.com/content/c0cb932a-076e-4471-8009-91749fde5f47?syn-25a6b1a6=1" target="_blank" rel="noopener noreferrer">黄仁勋回归后，亚洲科技股飙升</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Financial Times</span><span class="dot">·</span><span>26 分钟前</span></div>
+          <p class="summary">Nvidia chief executive’s reinstatement sent Wall Street shares higher</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.ft.com/content/08914b05-bbfa-478d-b38a-549acfc1aae6?syn-25a6b1a6=1" target="_blank" rel="noopener noreferrer">英伟达在黄仁勋复职后市值增加近1万亿美元</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Financial Times</span><span class="dot">·</span><span>2 小时前</span></div>
+          <p class="summary">Shares close 30% higher after board brings co-founder back with support from Donald Trump</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🚀</span>科学 · 太空</h2>
+        <span class="count">2 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.space.com/astronomy/moon/will-astronauts-farm-on-the-moon-scientists-successfully-grow-potatoes-in-simulated-lunar-dust" target="_blank" rel="noopener noreferrer">宇航员会在月球上耕种吗？科学家在模拟月球尘埃中成功种植出土豆</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Space.com</span><span class="dot">·</span><span>3 小时前</span></div>
+          <p class="summary">It&#x27;s no secret that NASA is working towards a permanent presence on the moon. The space agency even plans to build a moon base for its astronauts to call home.</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.sciencenews.org/article/riemann-hypothesis-solved-math-ai" target="_blank" rel="noopener noreferrer">数学的“圣杯”——黎曼猜想似乎在人工智能的帮助下得到了解决</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Science News</span><span class="dot">·</span><span>4 小时前</span></div>
+          <p class="summary">The proof apparently settles a 167-year-old puzzle related to prime numbers, thanks to a human mathematician working with AI.</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🏅</span>体育 · NBA · F1</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.motorsport.com/f1/news/max-verstappen-the-last-time-i-won-a-race-like-las-vegas-was-on-mario-kart/10877295/?utm_source=RSS&amp;utm_medium=referral&amp;utm_campaign=RSS-F1&amp;utm_term=News&amp;utm_content=www" target="_blank" rel="noopener noreferrer">马克斯·维斯塔潘开玩笑说，他上一次赢得像F1拉斯维加斯大奖赛这样的比赛还是在“马里奥赛车”中。</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Motorsport · F1</span><span class="dot">·</span><span>5 小时前</span></div>
+          <p class="summary">Four-time Formula 1 champion Max Verstappen says the last time he won a race like the Las Vegas Grand Prix was when he was playing Mario Kart. The Red Bull driver converted pole position into his 75th grand prix win, and his third in Las Vegas, in a race that…</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.cbssports.com/nba/news/nba-trade-rumors-lakers-jazz-kyrie-irving-nov-23/" target="_blank" rel="noopener noreferrer">NBA交易传闻：湖人队计划积极行动，爵士队在凯里·欧文的传闻之后另觅他处</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>CBS Sports · NBA</span><span class="dot">·</span><span>2 小时前</span></div>
+          <p class="summary">NBA trade season is still weeks away, but buzz is building one month into the 2026-27 season</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.theguardian.com/sport/2026/nov/23/max-verstappen-red-bull-f1-formula-one-las-vegas-grand-prix" target="_blank" rel="noopener noreferrer">“这不是F1”：马克斯·维斯塔潘批评超车频繁的拉斯维加斯大奖赛</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>The Guardian · Sport</span><span class="dot">·</span><span>13 小时前</span></div>
+          <p class="summary">Red Bull driver says race ‘isn’t how it should be’ Race in Nevada featured 352 overtakes Max Verstappen has said his outstanding victory at the Las Vegas Grand Prix on Saturday was not really true to the spirit of Formula One and how he wants to race.</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="emoji">🎮</span>游戏 · 动漫 · 文化</h2>
+        <span class="count">3 条</span>
+      </div>
+      
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.gcores.com/articles/222689" target="_blank" rel="noopener noreferrer">2026《英雄联盟》全球总决赛LPL纪录片“风起今朝”将于12月播出</a></h3>
+          <div class="meta"><span>机核</span><span class="dot">·</span><span>15 分钟前</span></div>
+          <p class="summary">2026《英雄联盟》全球总决赛LPL纪录片“风起今朝”将于12月在哔哩哔哩独家播出。2026全球总决赛瑞士轮，从全员告负到绝境重生，游戏内外，四支队伍经历了怎样的辗转起伏？本次纪录片将会揭晓各大战队幕后的精彩故事。 BLG电子竞技俱乐部于11月15日在纽约布鲁克林巴克莱中心以3比1击败韩国 LCK 赛区的 Gen.G， 首次夺得《英雄联盟》全球总决赛冠军。 这是 LPL 赛区自2021年 EDward Gaming 夺冠后的首座全球总决赛冠军，也是 LPL 赛区历史的第四次S赛夺冠。</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://www.nintendolife.com/news/2026/11/nintendo-expands-switch-2s-gamecube-library-with-another-game-this-week" target="_blank" rel="noopener noreferrer">任天堂本周又推出一款游戏，进一步扩充Switch 2的GameCube游戏库</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>Nintendo Life</span><span class="dot">·</span><span>10 分钟前</span></div>
+          <p class="summary">Wave Race: Blue Storm makes a splash. Nintendo&#x27;s GameCube title Wave Race: Blue Storm has today made a splash on the Switch Online + Expansion Pack service.</p>
+          
+        </div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        
+        <div class="item-body">
+          <h3><a class="title-link" href="https://blog.playstation.com/2026/11/23/thank-you-for-making-grand-theft-auto-vi-the-biggest-launch-in-playstation-history/" target="_blank" rel="noopener noreferrer">感谢您让《侠盗猎车手 VI》成为PlayStation历史上最成功的首发游戏</a><span class="badge">EN</span></h3>
+          <div class="meta"><span>PlayStation Blog</span><span class="dot">·</span><span>2 小时前</span></div>
+          <p class="summary">After a long wait, players finally have had the chance to jump into Grand Theft Auto VI. It’s been amazing to see the PlayStation community around the world begin their adventures in the state of Leonida.</p>
+          
+        </div>
+      </div>
+    </article>
+    </section>
+
+  <footer>
+    <div>由 Morning Brief 自动生成 · 09:40（北京时间）</div>
+    <div>当前使用备用翻译：英文标题已转为中文；如需 AI 摘要，可在 config.json 接入 DeepSeek。</div>
+    <details class="errors"><summary>4 个源暂时不可用</summary><pre>NASA：HTTP 429
+ESPN · NBA：返回内容不是 RSS/Atom（）
+ESPN · F1：返回内容不是 RSS/Atom（）
+ESPN · Soccer：返回内容不是 RSS/Atom（）</pre></details>
+  </footer>
+</div>
+</body>
+</html>

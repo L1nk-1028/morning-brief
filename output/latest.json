@@ -1,11 +1,12 @@
 {
-  "generated_at": "2026-11-23T01:40:39.107697+00:00",
-  "total_items": 1465,
-  "ok_sources": 48,
-  "failed_sources": 3,
+  "generated_at": "2026-11-24T01:40:04.994641+00:00",
+  "total_items": 1458,
+  "ok_sources": 47,
+  "failed_sources": 4,
   "errors": [
-    "ESPN · F1：返回内容不是 RSS/Atom（）",
+    "NASA：HTTP 429",
     "ESPN · NBA：返回内容不是 RSS/Atom（）",
+    "ESPN · F1：返回内容不是 RSS/Atom（）",
     "ESPN · Soccer：返回内容不是 RSS/Atom（）"
   ],
   "llm_used": false,
